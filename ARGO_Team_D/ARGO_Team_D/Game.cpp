@@ -8,7 +8,7 @@ Game::Game()
 		std::cout << "Failed to initialise SDL" << std::endl;
 	}
 
-	p_window = SDL_CreateWindow("ARGO", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1280, 720, SDL_WINDOW_SHOWN);
+	p_window = SDL_CreateWindow("Argo Project", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, m_windowWidth, m_windowHeight, SDL_WINDOW_OPENGL);
 	m_renderer = SDL_CreateRenderer(p_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
 	if (NULL == p_window)
@@ -83,7 +83,7 @@ void Game::render()
 		SDL_Log("Could not create a renderer: %s", SDL_GetError());
 	}
 
-	SDL_SetRenderDrawColor(m_renderer, 255, 0, 0, 255);
+	SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255);
 
 	SDL_RenderClear(m_renderer);
 
@@ -134,3 +134,4 @@ void Game::setUpFont() {
 	const char *path = "ASSETS\\FONTS\\arial.ttf";
 	Sans = TTF_OpenFont(path, 50);
 }
+

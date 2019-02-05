@@ -40,6 +40,8 @@ private:
 	TTF_Font* Sans;
 
 	RenderSystem m_renderSystem;
+
 	InputHandler inputHandler;
+
 };
 #endif // !GAME_H
