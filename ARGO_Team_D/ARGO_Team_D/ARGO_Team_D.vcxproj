@@ -70,12 +70,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SDL_SDK)\include;$(IncludePath);tmxlite\include;</IncludePath>
-    <LibraryPath>$(SDL_SDK)\lib\x86\;tmxlite\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SDL_SDK)\include;$(IncludePath);tmxlite\include;Box2D\include</IncludePath>
+    <LibraryPath>$(SDL_SDK)\lib\x86\;tmxlite\lib;Box2D\lib\x86_64\debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SDL_SDK)\include;tmxlite\include;</IncludePath>
-    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(SDL_SDK)\lib\x86;tmxlite\lib;</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SDL_SDK)\include;tmxlite\include;Box2D\include</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(SDL_SDK)\lib\x86;tmxlite\lib;Box2D\lib\x86_64\release</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
