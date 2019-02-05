@@ -10,10 +10,10 @@ public:
 	~SdlVector();
 
 	// Operators
-	SdlVector operator+(const SdlVector & vec);
-	SdlVector operator-(const SdlVector & vec);
-	SdlVector operator*(const float & val);
-	SdlVector operator/(const SdlVector & val);
+	//SdlVector operator+(const SdlVector & vec);
+	//SdlVector operator-(const SdlVector & vec);
+	//SdlVector operator*(const float & val);
+	//SdlVector operator/(const float & val);
 
 	// Public Members
 	float x;

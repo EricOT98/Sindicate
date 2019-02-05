@@ -16,12 +16,12 @@ SdlVector::~SdlVector() {}
 //	return SdlVector(x - v.x, y - v.y);
 //}
 //
-//SdlVector SdlVector::operator+(const SdlVector & val)
+//SdlVector SdlVector::operator*(const SdlVector & val)
 //{
 //	return SdlVector(x + v.x, y + v.y);
 //}
 //
-//SdlVector SdlVector::operator+(const float & val)
+//SdlVector SdlVector::operator/(const float & val)
 //{
 //	return SdlVector(x + v.x, y + v.y);
 //}
