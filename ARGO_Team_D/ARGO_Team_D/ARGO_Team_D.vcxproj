@@ -149,6 +149,7 @@
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="MacroCommand.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SdlVector.cpp" />
     <ClCompile Include="Systems\RenderSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -160,6 +161,7 @@
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="MacroCommand.h" />
     <ClInclude Include="Systems\RenderSystem.h" />
+    <ClInclude Include="SdlVector.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
