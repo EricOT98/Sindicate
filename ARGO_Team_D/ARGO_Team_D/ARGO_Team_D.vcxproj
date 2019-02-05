@@ -71,11 +71,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(SDL_SDK)\include;$(IncludePath);tmxlite\include;Box2D\include</IncludePath>
-    <LibraryPath>$(SDL_SDK)\lib\x86\;tmxlite\lib;Box2D\lib\AllConfigs\debug;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SDL_SDK)\lib\x86\;tmxlite\lib;Box2D\lib\x86_64\dbg;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SDL_SDK)\include;tmxlite\include;Box2D\include</IncludePath>
-    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(SDL_SDK)\lib\x86;tmxlite\lib;Box2D\lib\AllConfigs\release</LibraryPath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(SDL_SDK)\lib\x86;tmxlite\lib;Box2D\lib\x86_64\rls</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -165,16 +165,6 @@
     <ClInclude Include="Systems\System.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Debug\vc141.idb" />
-    <None Include="Debug\vc141.pdb" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Debug\ARGO_Team_D.log" />
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="Debug\Game.obj" />
-    <Object Include="Debug\main.obj" />
-    <Object Include="Debug\RenderSystem.obj" />
     <ClInclude Include="SdlVector.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
