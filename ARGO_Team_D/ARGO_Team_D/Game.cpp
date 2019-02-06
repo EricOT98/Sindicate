@@ -25,7 +25,8 @@ Game::Game()
 	}
 
 
-	p_window = SDL_CreateWindow("Argo Project", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, m_windowWidth, m_windowHeight, SDL_WINDOW_OPENGL);
+	p_window = SDL_CreateWindow("Argo Project", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, m_windowWidth, m_windowHeight, 0);
+	printf("Window Size(%d , %d)", m_windowWidth, m_windowHeight);
 	m_renderer = SDL_CreateRenderer(p_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
 	if (NULL == p_window)
@@ -53,7 +54,7 @@ Game::Game()
 	std::string name = "test";
 	e->addComponent(new SpriteComponent(name, *m_resourceManager, 1920, 1080));
 	m_renderSystem.addEntity(e);
-
+	m_controlSystem.addEntity(e);
 	inputHandler = new InputHandler(m_controlSystem);
 	level = new Level();
 	level->load("ASSETS/LEVELS/Level1.tmx", m_resourceManager);
@@ -94,10 +95,11 @@ void Game::processEvents()
 
 	while (SDL_PollEvent(&event))
 	{
+		inputHandler->handleInput(event);
 		switch (event.type)
 		{
 		case SDL_KEYDOWN:
-			inputHandler->handleInput(event.key.keysym.sym);
+			
 			if (event.key.keysym.sym == SDLK_ESCAPE)
 				m_quit = true;
 			break;
@@ -111,6 +113,7 @@ void Game::processEvents()
 void Game::update()
 {
 	// Empty ...
+	inputHandler->update();
 }
 
 void Game::render()
