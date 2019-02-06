@@ -7,7 +7,7 @@
 /// <summary>
 /// Draws any entites attached to the screen.
 /// </summary>
-class RenderSystem : System {
+class RenderSystem : public System {
 public:
 	void render(SDL_Renderer * renderer);
 

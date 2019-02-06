@@ -1,6 +1,8 @@
 #include "Game.h"
 #include <sstream>
 
+#include "ECS/Components/SpriteComponent.h"
+
 Game::Game()
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
@@ -45,6 +47,10 @@ Game::Game()
 	initialiseComponents();
 	initialiseSystems();
 	setUpFont();
+	Entity * e = new Entity();
+	e->addComponent(new PositionComponent(10, 10));
+	e->addComponent(new SpriteComponent());
+	m_renderSystem.addEntity(e);
 
 	inputHandler = new InputHandler(m_controlSystem);
 
