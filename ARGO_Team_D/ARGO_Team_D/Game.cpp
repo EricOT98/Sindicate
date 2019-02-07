@@ -77,7 +77,7 @@ m_world(m_gravity)
 	initialiseSystems();
 	setUpFont();
 	Entity * e = new Entity();
-	e->addComponent(new PositionComponent(200, 200));
+	e->addComponent(new PositionComponent(0, 0));
 	std::string name = "test";
 	e->addComponent(new SpriteComponent(name, *m_resourceManager, 1920, 1080));
 	m_renderSystem.addEntity(e);
@@ -85,6 +85,8 @@ m_world(m_gravity)
 	inputHandler = new InputHandler(m_controlSystem);
 	level = new Level(m_world);
 	level->load("ASSETS/LEVELS/Level1.tmx", m_resourceManager);
+	SDL_Rect bounds = { 0,0, 1920, 1080 };
+	m_camera.setBounds(bounds);
 }
 
 Game::~Game()
@@ -151,12 +153,18 @@ void Game::processEvents()
 
 void Game::update()
 {
+	std::vector<std::string> s = { "Position" };
+	auto comps = player.getComponentsOfType(s);
+	PositionComponent * p = dynamic_cast<PositionComponent*>(comps["Position"]);
+	m_camera.update(VectorAPI(m_body2->GetPosition().x, m_body2->GetPosition().y), 0);
+	// Empty ...
 	m_world.Step(1 / 60.f, 10, 5); // Update the Box2d world
 	inputHandler->update();
 }
 
 void Game::render()
 {
+	const SDL_Rect bounds = m_camera.getBounds();
 	if (m_renderer == nullptr)
 	{
 		SDL_Log("Could not create a renderer: %s", SDL_GetError());
@@ -165,9 +173,9 @@ void Game::render()
 	SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255);
 
 	SDL_RenderClear(m_renderer);
-
-	m_renderSystem.render(m_renderer);
-	level->render(m_renderer);
+	m_renderSystem.render(m_renderer, bounds);
+	
+	level->render(m_renderer, bounds);
 
 	b1X = m_body1->GetPosition().x - 50;
 	b1Y = m_body1->GetPosition().y - 50;
@@ -175,15 +183,15 @@ void Game::render()
 	b2Y = m_body2->GetPosition().y - 50;
 
 	SDL_Rect dest;
-	dest.x = b1X;
-	dest.y = b1Y;
+	dest.x = b1X - bounds.x;
+	dest.y = b1Y - bounds.y;
 	dest.w = 100.f;
 	dest.h = 100.f;
 	SDL_RenderCopy(m_renderer, square, NULL, &dest);
 
 	SDL_Rect dest2;
-	dest2.x = b2X;
-	dest2.y = b2Y;
+	dest2.x = b2X - bounds.x;
+	dest2.y = b2Y - bounds.y;
 	dest2.w = 100.f;
 	dest2.h = 100.f;
 	SDL_RenderCopy(m_renderer, square, NULL, &dest2);

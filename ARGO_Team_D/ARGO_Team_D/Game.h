@@ -15,6 +15,7 @@
 #include <Box2D\Box2D.h>
 #include "Level/Level.h"
 #include "Utils/VectorAPI.h"
+#include "Camera.h"
 
 
 using namespace std;
@@ -77,5 +78,8 @@ private:
 	b2PolygonShape m_poly2;
 	b2FixtureDef m_fixture2;
 
+
+	Camera m_camera;
+	Entity player;
 };
 #endif // !GAME_H
