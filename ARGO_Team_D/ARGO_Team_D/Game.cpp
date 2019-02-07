@@ -3,8 +3,10 @@
 #include "ECS/Components/PositionComponent.h"
 #include "ECS/Components/SpriteComponent.h"
 
-Game::Game() : m_gravity(0, 90.81f),
-m_world(m_gravity)
+Game::Game() :
+	m_gravity(0, 90.81f),
+	m_world(m_gravity),
+	m_camera(m_windowWidth, m_windowHeight)
 {
 	// Box2D Test Code
 	m_bodyDef1.position = b2Vec2(b1X + 50, b1Y + 50);
@@ -103,8 +105,6 @@ m_world(m_gravity)
 	inputHandler = new InputHandler(m_controlSystem);
 	level = new Level(m_world);
 	level->load("ASSETS/LEVELS/Level1.tmx", m_resourceManager);
-	SDL_Rect bounds = { 0,0, 1920, 1080 };
-	m_camera.setBounds(bounds);
 }
 
 Game::~Game()
@@ -227,9 +227,15 @@ void Game::processEvents()
 			{
 				m_body2->SetLinearVelocity(b2Vec2(0, -100));
 			}
+			if (event.key.keysym.sym == SDLK_RETURN) {
+				m_camera.m_shaking = true;
+			}
 			break;
 		case SDL_QUIT:
 			m_quit = true;
+			break;
+		default:
+			m_camera.m_shaking = false;
 			break;
 		}
 	}
@@ -279,8 +285,6 @@ void Game::render()
 	SDL_SetRenderDrawColor(m_renderer, 125, 125, 125, 255);
 
 	SDL_RenderClear(m_renderer);
-	
-
 
 	switch (m_gameState)
 	{
