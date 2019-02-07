@@ -14,6 +14,8 @@
 #include "ControlSystem.h"
 #include <Box2D\Box2D.h>
 #include "Level/Level.h"
+#include "Utils/VectorAPI.h"
+
 
 using namespace std;
 
@@ -74,5 +76,6 @@ private:
 	b2Body * m_body2;
 	b2PolygonShape m_poly2;
 	b2FixtureDef m_fixture2;
+
 };
 #endif // !GAME_H
