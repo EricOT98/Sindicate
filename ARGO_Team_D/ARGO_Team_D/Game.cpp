@@ -1,6 +1,5 @@
 #include "Game.h"
 #include <sstream>
-
 #include "ECS/Components/PositionComponent.h"
 #include "ECS/Components/SpriteComponent.h"
 
@@ -49,7 +48,6 @@ m_world(m_gravity)
 	}
 
 	p_window = SDL_CreateWindow("Argo Project", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, m_windowWidth, m_windowHeight, 0);
-	printf("Window Size(%d , %d)\n", m_windowWidth, m_windowHeight);
 	m_renderer = SDL_CreateRenderer(p_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	SDL_SetRenderDrawBlendMode(m_renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
@@ -95,13 +93,13 @@ m_world(m_gravity)
 	initialiseSystems();
 	setUpFont();
 
-
-	Entity * e = new Entity();
-	e->addComponent(new PositionComponent(0, 0));
+	/*Entity * e = new Entity();
+	e->addComponent(new PositionComponent(200, 200));
 	std::string name = "test";
 	e->addComponent(new SpriteComponent(name, *m_resourceManager, 1920, 1080));
 	m_renderSystem.addEntity(e);
-	m_controlSystem.addEntity(e);
+	m_controlSystem.addEntity(e);*/
+
 	inputHandler = new InputHandler(m_controlSystem);
 	level = new Level(m_world);
 	level->load("ASSETS/LEVELS/Level1.tmx", m_resourceManager);
@@ -248,7 +246,7 @@ void Game::update()
 		if (doneFading) // dont update the game unless screen is done fading
 		{
 			std::vector<std::string> s = { "Position" };
-			auto comps = player.getComponentsOfType(s);
+			auto comps = player->getComponentsOfType(s);
 			PositionComponent * p = dynamic_cast<PositionComponent*>(comps["Position"]);
 			m_camera.update(VectorAPI(m_body2->GetPosition().x, m_body2->GetPosition().y), 0);
 			m_world.Step(1 / 60.f, 10, 5); // Update the Box2d world
@@ -346,6 +344,12 @@ void Game::quit()
 /// </summary>
 void Game::initialiseEntitys()
 {
+	std::string name = "test";
+
+	playerFactory = new CharacterFactory(m_resourceManager);
+	Entity * e = playerFactory->CreateEntityPlayer(name, 1, VectorAPI(0, 0), 1920, 1080);
+	m_entityList.push_back(e);
+	player = new Entity(2);
 
 }
 
@@ -362,6 +366,18 @@ void Game::initialiseComponents()
 /// </summary>
 void Game::initialiseSystems()
 {
+	for (auto i : m_entityList) {
+
+		if (i->checkForComponent("Sprite"))
+		{
+			m_renderSystem.addEntity(i);
+		}
+
+		if (i->checkForComponent("Control"))
+		{
+			m_controlSystem.addEntity(i);
+		}
+	}
 
 }
 

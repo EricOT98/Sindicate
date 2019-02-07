@@ -14,11 +14,13 @@
 #include "ControlSystem.h"
 #include <Box2D\Box2D.h>
 #include "Level/Level.h"
-#include"Menu/Button.h"
-#include"Menu/MainMenu.h"
-#include"Menu/OptionsMenu.h"
-#include"Menu/CreditsScreen.h"
-#include"Menu/LevelSelectMenu.h"
+#include "Factories/Factory.h"
+#include "Factories/CharacterFactory.h"
+#include "Menu/Button.h"
+#include "Menu/MainMenu.h"
+#include "Menu/OptionsMenu.h"
+#include "Menu/CreditsScreen.h"
+#include "Menu/LevelSelectMenu.h"
 #include "Utils/VectorAPI.h"
 #include "Camera.h"
 
@@ -101,8 +103,9 @@ private:
 	b2FixtureDef m_fixture2;
 
 
+	Factory* playerFactory;
 	Camera m_camera;
-	Entity player;
+	Entity* player;
 
 	State m_gameState;
 	State m_nextState;
@@ -117,6 +120,6 @@ private:
 	SDL_Rect m_transitionScreen;
 	float m_transitionAlphaPercent;
 
-	
+	std::vector<Entity*> m_entityList;
 };
 #endif // !GAME_H
