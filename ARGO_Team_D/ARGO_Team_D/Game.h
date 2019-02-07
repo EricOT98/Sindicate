@@ -14,10 +14,26 @@
 #include "ControlSystem.h"
 #include <Box2D\Box2D.h>
 #include "Level/Level.h"
+#include"Menu/Button.h"
+#include"Menu/MainMenu.h"
+#include"Menu/OptionsMenu.h"
+#include"Menu/CreditsScreen.h"
+#include"Menu/LevelSelectMenu.h"
 #include "Utils/VectorAPI.h"
 #include "Camera.h"
 
+class MainMenu;
+class OptionsMenu;
+class CreditScreen;
+class LevelSelectMenu;
 
+enum State {
+	Menu,
+	PlayScreen,
+	Options,
+	Credits,
+	LevelSelect
+};
 using namespace std;
 
 class Game
@@ -26,7 +42,13 @@ public:
 	Game();
 	~Game();
 	void run();
+	void setGameState(State state);
+	bool fadeOn;
+	bool fadeOff;
+	bool doneFading;
 
+	void fadeToState(State state);
+	void fade();
 private:
 	void processEvents();
 	void update();
@@ -41,8 +63,8 @@ private:
 	SDL_Renderer * m_renderer;
 	bool m_quit = false;
 
-	int m_windowWidth = 1920;
-	int m_windowHeight = 1080;
+	int m_windowWidth = 1280;
+	int m_windowHeight = 720;
 	TTF_Font* Sans;
 
 	RenderSystem m_renderSystem;
@@ -81,5 +103,20 @@ private:
 
 	Camera m_camera;
 	Entity player;
+
+	State m_gameState;
+	State m_nextState;
+
+	std::vector<Button *> buttons;
+
+	MainMenu * m_menu;
+	OptionsMenu * m_options;
+	CreditScreen * m_credits;
+	LevelSelectMenu * m_levelSelect;
+
+	SDL_Rect m_transitionScreen;
+	float m_transitionAlphaPercent;
+
+	
 };
 #endif // !GAME_H
