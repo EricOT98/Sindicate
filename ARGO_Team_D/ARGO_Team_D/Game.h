@@ -15,7 +15,6 @@
 #include <Box2D\Box2D.h>
 #include "Level/Level.h"
 
-
 using namespace std;
 
 class Game
@@ -58,10 +57,12 @@ private:
 	b2Vec2 m_gravity;
 	b2World m_world;
 
+	Level * level;
+
 	// Box2D Test Code
-	float b1X = 400.f;
-	float b1Y = 450.f;
-	float b2X = 400.f;
+	float b1X = 100.f;
+	float b1Y = 100.f;
+	float b2X = 500.f;
 	float b2Y = 0.f;
 
 	b2BodyDef m_bodyDef1;
@@ -73,6 +74,5 @@ private:
 	b2Body * m_body2;
 	b2PolygonShape m_poly2;
 	b2FixtureDef m_fixture2;
-	Level * level;
 };
 #endif // !GAME_H
