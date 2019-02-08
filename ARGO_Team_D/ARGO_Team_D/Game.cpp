@@ -292,9 +292,9 @@ void Game::render()
 		m_menu->draw();
 		break;
 	case PlayScreen:
-		m_renderSystem.render(m_renderer, bounds);
+		m_renderSystem.render(m_renderer, m_camera);
 
-		level->render(m_renderer, bounds);
+		level->render(m_renderer, m_camera);
 
 		b1X = m_body1->GetPosition().x - 50;
 		b1Y = m_body1->GetPosition().y - 50;
