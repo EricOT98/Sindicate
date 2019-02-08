@@ -8,6 +8,9 @@
 #include <SDL_mixer.h>
 #include "ECS/Entities/Entity.h"
 #include "ECS/Systems/RenderSystem.h"
+#include "ECS/Systems/PhysicsSystem.h"
+#include "ECS/Components/PositionComponent.h"
+#include "ECS/Components/SpriteComponent.h"
 #include <tmxlite/Map.hpp>
 #include "InputHandler.h"
 #include "Resource Manager/ResourceManager.h"
@@ -70,6 +73,8 @@ private:
 	TTF_Font* Sans;
 
 	RenderSystem m_renderSystem;
+
+	PhysicsSystem m_physicsSystem;
 
 	InputHandler *inputHandler;
 
