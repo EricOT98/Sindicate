@@ -1,14 +1,12 @@
 #include "Game.h"
-#include <sstream>
-#include "ECS/Components/PositionComponent.h"
-#include "ECS/Components/SpriteComponent.h"
 
 const float WORLD_SCALE = 30.f;
 
 Game::Game() :
 	m_gravity(0, 90.81f),
 	m_world(m_gravity),
-	m_camera(m_windowWidth, m_windowHeight)
+	m_camera(m_windowWidth, m_windowHeight),
+	m_physicsSystem(WORLD_SCALE)
 {
 	// Box2D Test Code
 	m_bodyDef2.position = b2Vec2((b2X + 50) / WORLD_SCALE, (b2Y + 50) / WORLD_SCALE);
@@ -86,12 +84,13 @@ Game::Game() :
 	initialiseSystems();
 	setUpFont();
 
-	/*Entity * e = new Entity();
+	Entity * e = new Entity(0);
 	e->addComponent(new PositionComponent(200, 200));
-	std::string name = "test";
-	e->addComponent(new SpriteComponent(name, *m_resourceManager, 1920, 1080));
+	std::string name = "testsquare";
+	e->addComponent(new SpriteComponent(name, *m_resourceManager, 100, 100));
+	e->addComponent(new BodyComponent(200, 200, 100, m_world, WORLD_SCALE));
 	m_renderSystem.addEntity(e);
-	m_controlSystem.addEntity(e);*/
+	m_physicsSystem.addEntity(e);
 
 	inputHandler = new InputHandler(m_controlSystem);
 	level = new Level(m_world, WORLD_SCALE);
@@ -244,6 +243,7 @@ void Game::update()
 			auto comps = player->getComponentsOfType(s);
 			PositionComponent * p = dynamic_cast<PositionComponent*>(comps["Position"]);
 			m_world.Step(1 / 60.f, 10, 5); // Update the Box2d world
+			m_physicsSystem.update();
 			m_camera.update(VectorAPI(m_body2->GetPosition().x * WORLD_SCALE + 50.f, m_body2->GetPosition().y * WORLD_SCALE + 50.f), 0);
 			inputHandler->update();
 		}
