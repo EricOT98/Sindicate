@@ -7,7 +7,6 @@
     <ClCompile Include="ECS\Components\PositionComponent.cpp" />
     <ClCompile Include="ECS\Systems\RenderSystem.cpp" />
     <ClCompile Include="ControlSystem.cpp" />
-    <ClCompile Include="Factories\CharacterFactory.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="Level\Level.cpp" />
@@ -26,6 +25,7 @@
     <ClCompile Include="ECS\Components\BodyComponent.cpp" />
     <ClCompile Include="ECS\Systems\PhysicsSystem.cpp" />
     <ClCompile Include="Menu\Screen.cpp" />
+    <ClCompile Include="Factories\PlayerFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Command.h" />
@@ -38,7 +38,6 @@
     <ClInclude Include="ECS\Entities\Entity.h" />
     <ClInclude Include="ECS\Systems\RenderSystem.h" />
     <ClInclude Include="ECS\Systems\System.h" />
-    <ClInclude Include="Factories\CharacterFactory.h" />
     <ClInclude Include="Factories\Factory.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="InputHandler.h" />
@@ -61,5 +60,6 @@
     <ClInclude Include="ECS\Components\BodyComponent.h" />
     <ClInclude Include="ECS\Systems\PhysicsSystem.h" />
     <ClInclude Include="Menu\Screen.h" />
+    <ClInclude Include="Factories\PlayerFactory.h" />
   </ItemGroup>
 </Project>
