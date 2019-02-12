@@ -11,6 +11,7 @@ void main()
 {
 	static int playerID = 1;
 	int port = 8080;
+
 	// Initialze winsock
 	WSADATA wsData;
 	WORD ver = MAKEWORD(2, 2);
@@ -76,6 +77,7 @@ void main()
 				FD_SET(client, &master);
 
 				string welcomeMsg = "ID: " + to_string(playerID);
+				playerID++;
 				send(client, welcomeMsg.c_str(), welcomeMsg.size() + 1, 0);
 
 			}
@@ -104,7 +106,6 @@ void main()
 							running = false;
 							break;
 						}
-
 						// Unknown command
 						continue;
 					}
