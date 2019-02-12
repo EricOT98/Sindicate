@@ -1,5 +1,5 @@
-#ifndef CHARACTERFACTORY_H
-#define CHARACTERFACTORY_H
+#ifndef PLAYERFACTORY_H
+#define PLAYERFACTORY_H
 
 #include "..//ECS/Entities/Entity.h"
 #include "..//Resource Manager/ResourceManager.h"
@@ -21,4 +21,4 @@ private:
 	VectorAPI m_dimensions;
 };
 
-#endif
+#endif // !PLAYERFACTORY_H
