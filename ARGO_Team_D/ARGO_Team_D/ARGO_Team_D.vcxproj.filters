@@ -10,7 +10,6 @@
     <ClCompile Include="ECS\Systems\PhysicsSystem.cpp" />
     <ClCompile Include="ECS\Systems\RenderSystem.cpp" />
     <ClCompile Include="ControlSystem.cpp" />
-    <ClCompile Include="Factories\CharacterFactory.cpp" />
     <ClCompile Include="FSM\Animation.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="InputHandler.cpp" />
@@ -37,6 +36,7 @@
     <ClCompile Include="FSM\IdleState.cpp" />
     <ClCompile Include="ECS\Systems\MovementSystem.cpp" />
     <ClCompile Include="ECS\Systems\TimeToLiveSystem.cpp" />
+    <ClCompile Include="Utils\ContactListener.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Command.h" />
@@ -87,5 +87,6 @@
     <ClInclude Include="ECS\Systems\MovementSystem.h" />
     <ClInclude Include="ECS\Components\TimeToLiveComponent.h" />
     <ClInclude Include="ECS\Systems\TimeToLiveSystem.h" />
+    <ClInclude Include="Utils\ContactListener.h" />
   </ItemGroup>
 </Project>

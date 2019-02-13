@@ -36,6 +36,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <functional>
+#include "Utils/ContactListener.h"
 
 class ControlSystem;
 class MainMenu;
@@ -121,6 +122,7 @@ private:
 	// Box2D
 	b2Vec2 m_gravity;
 	b2World m_world;
+	BodyContactListener m_contactListener;
 
 	// Level
 	Level * level;
