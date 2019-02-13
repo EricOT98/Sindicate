@@ -119,7 +119,7 @@ Game::Game() :
 	level->load("ASSETS/LEVELS/Level1.tmx", m_resourceManager);
 
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 30; i++)
 	{
 		Entity * e = new Entity();
 		e->addComponent(new PositionComponent(-10000, -10000));
