@@ -9,13 +9,10 @@ Game::Game() :
 	m_camera(m_windowWidth, m_windowHeight),
 	m_physicsSystem(WORLD_SCALE)
 {
+	m_network = NetworkingSystem();
+	m_network.initClientLocalClient();
+
 	m_world.SetContactListener(&m_contactListener);
-	if (m_client.init()) {
-		cout << "Client Created" << endl;
-	}
-	else {
-		std::cout << "Couldnt Connect" << std::endl;
-	}
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{
@@ -256,7 +253,13 @@ void Game::processEvents()
 
 void Game::update(const float & dt)
 {
-	parseNetworkData(m_client.processMessage(m_client.Receive()));
+	if (!m_network.getHost())
+	{
+		m_network.updateFromHost();
+	}
+	else {
+		m_network.updateClients();
+	}
 
 	switch (m_gameState)
 	{
@@ -285,8 +288,19 @@ void Game::update(const float & dt)
 	case LevelSelect:
 		m_levelSelect->update();
 		break;
+	case Multiplayer:
+		m_network.updateFromHost();
+		break;
 	default:
 		break;
+	}
+
+	if (!m_network.getHost())
+	{
+		m_network.sendToHost();
+	}
+	else {
+		m_network.sendToClients();
 	}
 }
 
@@ -457,17 +471,5 @@ void Game::spawnProjectile(float x, float y)
 			break;
 		}
 
-	}
-}
-void Game::parseNetworkData(std::map<std::string, int> parsedMessage)
-{
-	for (auto const& pair : parsedMessage) {
-
-		auto key = pair.first;
-		auto value = pair.second;
-
-		if (key == "ID") {
-			m_client.setID(value);
-		}
 	}
 }

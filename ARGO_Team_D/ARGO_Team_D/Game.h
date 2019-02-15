@@ -27,7 +27,7 @@
 #include "Menu/LevelSelectMenu.h"
 #include "Utils/VectorAPI.h"
 #include "Camera.h"
-#include "Client/Client.h"
+#include "ECS/Systems/NetworkingSystem.h"
 #include <SDL_haptic.h>
 #include "ECS/Systems/MovementSystem.h"
 #include "ECS/Components/VelocityComponent.h"
@@ -50,8 +50,10 @@ enum State {
 	PlayScreen,
 	Options,
 	Credits,
-	LevelSelect
+	LevelSelect,
+	Multiplayer
 };
+
 using namespace std;
 
 class Game
@@ -145,8 +147,8 @@ private:
 	LevelSelectMenu * m_levelSelect;
 
 	// Networking
-	Client m_client;
-	void parseNetworkData(std::map<std::string, int> parsedMessage);
+	NetworkingSystem m_network;
+
 	//bullets
 	std::vector<Entity *> m_bullets;
 	float startTimer;
