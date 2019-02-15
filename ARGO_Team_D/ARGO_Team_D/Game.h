@@ -6,6 +6,9 @@
 #include <SDL_ttf.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
+#include <SDL_haptic.h>
+
+
 #include "ECS/Entities/Entity.h"
 #include "ECS/Systems/RenderSystem.h"
 #include "ECS/Systems/PhysicsSystem.h"
@@ -17,7 +20,7 @@
 #include "Resource Manager/ResourceManager.h"
 #include "ControlSystem.h"
 #include <Box2D\Box2D.h>
-#include "Level/Level.h"
+#include "Level/LevelManager.h"
 #include "Factories/Factory.h"
 #include "Factories/PlayerFactory.h"
 #include "Menu/Button.h"
@@ -27,6 +30,7 @@
 #include "Menu/LevelSelectMenu.h"
 #include "Utils/VectorAPI.h"
 #include "Camera.h"
+#include "Client/Client.h"
 #include "ECS/Systems/NetworkingSystem.h"
 #include <SDL_haptic.h>
 #include "ECS/Systems/MovementSystem.h"
@@ -66,8 +70,14 @@ public:
 	void setGameState(State state);
 	void fadeToState(State state);
 	void fade();
+	// Level
+	LevelManager m_levelManager;
+
+	// Resources
+	ResourceManager * m_resourceManager;
 
 	void spawnProjectile(float x, float y);
+	SDL_Renderer * m_renderer;
 private:
 	void processEvents();
 	void update(const float & dt);
@@ -80,9 +90,8 @@ private:
 
 	// SDL Window
 	SDL_Window * p_window;
-	SDL_Renderer * m_renderer;
-	int m_windowWidth = 1920;
-	int m_windowHeight = 1080;
+	int m_windowWidth = 1280;
+	int m_windowHeight = 720;
 	bool m_quit = false;
 	TTF_Font* Sans;
 
@@ -113,9 +122,6 @@ private:
 	SDL_Joystick* gGameController = NULL;
 	SDL_Haptic* gControllerHaptic = NULL;
 
-	// Resources
-	ResourceManager * m_resourceManager;
-
 	// Test - TO BE REMOVED
 	SDL_Texture * texture;
 	SDL_Texture * square;
@@ -126,9 +132,6 @@ private:
 	b2Vec2 m_gravity;
 	b2World m_world;
 	BodyContactListener m_contactListener;
-
-	// Level
-	Level * level;
 
 	// Scene Transitions
 	SDL_Rect m_transitionScreen;
@@ -153,5 +156,6 @@ private:
 	std::vector<Entity *> m_bullets;
 	float startTimer;
 	bool fire = false;
+	int test;
 };
 #endif // !GAME_H

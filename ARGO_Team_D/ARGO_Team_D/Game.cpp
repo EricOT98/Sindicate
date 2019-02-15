@@ -111,9 +111,7 @@ Game::Game() :
 	initialiseSystems();
 	setUpFont();
 
-	level = new Level(m_world, WORLD_SCALE);
 	inputHandler = new InputHandler(m_controlSystem, *gGameController, *gControllerHaptic);
-	level->load("ASSETS/LEVELS/Level1.tmx", m_resourceManager);
 
 
 	for (int i = 0; i < 30; i++)
@@ -153,6 +151,7 @@ Game::Game() :
 	m_controlSystem.addEntity(e2);
 	m_animationSystem.addEntity(e2);
 	m_renderSystem.addEntity(e2);
+	m_levelManager.parseLevelSystem("ASSETS/LEVELS/LevelSystem.json", m_world, WORLD_SCALE, Sans);
 }
 
 Game::~Game()
@@ -277,6 +276,8 @@ void Game::update(const float & dt)
 			m_ttlSystem.update();
 			inputHandler->update();
 			m_animationSystem.update(dt / 1000);
+			m_levelManager.update(dt/1000);
+			m_levelManager.checkPlayerCollisions(m_player, *m_resourceManager, WORLD_SCALE, m_renderer);
 		}
 		break;
 	case Options:
@@ -323,7 +324,7 @@ void Game::render()
 		break;
 	case PlayScreen:
 		m_renderSystem.render(m_renderer, m_camera);
-		level->render(m_renderer, m_camera);
+		m_levelManager.render(m_renderer, m_camera);
 		break;
 	case Options:
 		m_options->draw();

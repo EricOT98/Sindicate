@@ -21,6 +21,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="Level\Level.cpp" />
+    <ClCompile Include="Level\LevelManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Menu\Button.cpp" />
     <ClCompile Include="Menu\CreditsScreen.cpp" />
@@ -67,6 +68,7 @@
     <ClInclude Include="FSM\WalkingState.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="InputHandler.h" />
+    <ClInclude Include="Level\LevelManager.h" />
     <ClInclude Include="Level\Level.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Menu\Button.h" />
@@ -87,5 +89,8 @@
     <ClInclude Include="Utils\VectorAPI.h" />
     <ClInclude Include="Utils\MathUtils.h" />
     <ClInclude Include="Resource Manager\SoundResource.h" />
+    <ClInclude Include="Utils\CollisionData.h" />
+    <ClInclude Include="Utils\PhysicsBody.h" />
+    <ClInclude Include="Utils\TutorialTrigger.h" />
   </ItemGroup>
 </Project>

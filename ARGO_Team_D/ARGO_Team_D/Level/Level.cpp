@@ -2,14 +2,16 @@
 #include <iostream>
 
 
-Level::Level(b2World & world, float worldScale)
+Level::Level(b2World & world, float worldScale, TTF_Font * font)
 	: m_refWorld(world),
-	m_worldScale(worldScale)
+	m_worldScale(worldScale),
+	m_font(font)
 {
 }
 
 Level::~Level()
 {
+	unload();
 }
 
 /// <summary>
@@ -19,8 +21,10 @@ Level::~Level()
 /// <param name="filepath">Filepath for the level file</param>
 /// <param name="rManager">Pointer to the resource manager to handle texture loading</param>
 /// <returns></returns>
-bool Level::load(const std::string filepath, ResourceManager * rManager)
+bool Level::load(const std::string filepath, ResourceManager * rManager, SDL_Renderer * renderer)
 {
+	unload();
+
 	if (m_map.load(filepath)) {
 		tmx::Vector2u tileCount = m_map.getTileCount();
 		m_rows = tileCount.y;
@@ -62,7 +66,7 @@ bool Level::load(const std::string filepath, ResourceManager * rManager)
 				continue;
 			case tmx::Layer::Type::Object:
 				std::cout << "Object Layer: " << layerNum << std::endl;
-				parseTMXObjectLayer(layer, layerNum);
+				parseTMXObjectLayer(layer, layerNum, renderer);
 				continue;
 			case tmx::Layer::Type::Image:
 				std::cout << "Image Layer" << layerNum++ << std::endl;
@@ -93,6 +97,16 @@ void Level::parseTMXTileLayer(const std::unique_ptr<tmx::Layer>& layer, int laye
 	//std::cout << "Got all tiles" << std::endl;
 
 	//For every tile at poistion do something
+	auto props = tile_layer->getProperties();
+	bool destructible = std::find_if(props.begin(), props.end(), [](tmx::Property & p) {
+		if (p.getName() == "Destructible") {
+			if (p.getBoolValue()) {
+				return true;
+			}
+		}
+		return false;
+
+	}) != props.end();
 	int count = 0;
 	for (auto y = 0; y < m_rows; ++y) {
 		for (auto x = 0; x < m_cols; ++x) {
@@ -148,6 +162,7 @@ void Level::parseTMXTileLayer(const std::unique_ptr<tmx::Layer>& layer, int laye
 			t->srcX = region_x;
 			t->srcY = region_y;
 			t->texture = m_tilesets.at(tset_gid);
+			t->destructible = destructible;
 			m_tiles[y][x] = t;
 			//t->m_index = tile_index;
 			count++;
@@ -157,6 +172,9 @@ void Level::parseTMXTileLayer(const std::unique_ptr<tmx::Layer>& layer, int laye
 	{
 		float xPos, yPos, width = 0;
 		bool bodyStarted = false;
+		if (y == 26) {
+			std::cout << std::endl;
+		}
 		for (auto x = 0; x < m_cols; ++x)
 		{
 			if (nullptr != m_tiles[y][x])
@@ -171,6 +189,10 @@ void Level::parseTMXTileLayer(const std::unique_ptr<tmx::Layer>& layer, int laye
 				else
 				{
 					width += m_tileWidth;
+				}
+				if (x == m_cols - 1) {
+					bodyStarted = false;
+					createBody(xPos, yPos, width);
 				}
 			}
 			else if(bodyStarted)
@@ -188,16 +210,58 @@ void Level::parseTMXTileLayer(const std::unique_ptr<tmx::Layer>& layer, int laye
 /// </summary>
 /// <param name="layer"></param>
 /// <param name="layerNum"></param>
-void Level::parseTMXObjectLayer(const std::unique_ptr<tmx::Layer>& layer, int layerNum)
+void Level::parseTMXObjectLayer(const std::unique_ptr<tmx::Layer>& layer, int layerNum, SDL_Renderer * renderer)
 {
 	auto* object_layer = dynamic_cast<const tmx::ObjectGroup*>(layer.get());
 	auto & layer_objects = object_layer->getObjects();
 
 	std::cout << "Name: " << object_layer->getName();
 	for (auto & object : layer_objects) {
-		if (object.getName() != "Example") {
-			uint32_t object_uid = object.getUID();
-			const tmx::FloatRect object_aabb = object.getAABB();
+		std::string type = object.getType();
+		if (type == "PlayerSpawn") {
+			auto pos = object.getPosition();
+			m_startPos.x = pos.x;
+			m_startPos.y = pos.y;
+		}
+		else if (type == "Goal") {
+			auto rect = object.getAABB();
+			m_goal = { (int)rect.left, (int)rect.top, (int)rect.width, (int)rect.height };
+		}
+		else if (type == "TutorialTrigger") {
+			auto rect = object.getAABB();
+			auto rotation = object.getRotation();
+			auto t = new TutorialTrigger(
+				rect.left,
+				rect.top,
+				rect.width,
+				rect.height,
+				rotation, 
+				m_worldScale,
+				m_refWorld
+			);
+			m_tutorials.push_back(t);
+		}
+		else if (type == "TutorialPoint") {
+			auto & props = object.getProperties();
+			auto id = std::find_if(props.begin(), props.end(), [](const tmx::Property & p) {
+				return p.getName() == "RelativeTriggerID";
+			});
+			if (id != props.end()) {
+				auto tutorial = m_tutorials.at(id->getIntValue() - 1);
+				auto & bounds = tutorial->promptBounds;
+
+				auto loadedBounds = object.getAABB();
+				bounds = { (int)loadedBounds.left, (int)loadedBounds.top, (int)loadedBounds.width, (int)loadedBounds.height };
+				tutorial->originalSizeV = VectorAPI(bounds.w, bounds.h);
+				auto message = std::find_if(props.begin(), props.end(), [](const tmx::Property & p) {
+					return p.getName() == "Message";
+				});
+				tutorial->message = message->getStringValue();
+				SDL_Color col = { 255,0,0,255 };
+				tutorial->messageSurface = TTF_RenderText_Blended_Wrapped(m_font, tutorial->message.c_str(), col, bounds.w);
+				tutorial->messageTexture = SDL_CreateTextureFromSurface(renderer, tutorial->messageSurface);
+				std::cout << "Tutorial: " << id->getIntValue() << " Message: " << tutorial->message << std::endl;
+			}
 		}
 	}
 }
@@ -240,6 +304,22 @@ void Level::render(SDL_Renderer * renderer, Camera &camera)
 			}
 		}
 	}
+	Uint8 r = 0, g = 0, b = 0, a = 0;
+	SDL_GetRenderDrawColor(renderer, &r, &g, &b, &a);
+	for (auto & tutorial : m_tutorials) {
+		SDL_Rect rect = tutorial->promptBounds;
+		rect.x -= bounds.x;
+		rect.y -= bounds.y;
+		SDL_RenderCopy(renderer, tutorial->messageTexture, NULL, &rect);
+		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+		SDL_RenderDrawRect(renderer, &rect);
+
+		SDL_Rect tRect = tutorial->bounds;
+		tRect.x -= bounds.x;
+		tRect.y -= bounds.y;
+		SDL_RenderDrawRect(renderer, &tRect);
+	}
+	SDL_SetRenderDrawColor(renderer, r, g, b, a);
 	//std::cout << tileD << "/" << tileC << " tiles Shown with bounds of: " << bounds.x << "," << bounds.y  << "," << bounds.w << "," << bounds.h << std::endl;
 }
 
@@ -251,7 +331,7 @@ void Level::render(SDL_Renderer * renderer, Camera &camera)
 /// <param name="t">The width of the body</param>
 void Level::createBody(float x, float y, float width)
 {
-	PhysicsBody  * pb = new PhysicsBody();
+	PhysicsBody  * pb = new PhysicsBody("PhysicsBody");
 	pb->bodyDef.type = b2_staticBody;
 	pb->bodyDef.position = b2Vec2((x + (width / 2.f)) / m_worldScale, (y + (m_tileHeight / 2.f)) / m_worldScale);
 	pb->body = m_refWorld.CreateBody(&pb->bodyDef);
@@ -259,6 +339,9 @@ void Level::createBody(float x, float y, float width)
 	pb->fixture.density = 1.f;
 	pb->fixture.friction = 0.f;
 	pb->fixture.shape = &pb->shape;
+	pb->fixture.filter.categoryBits = 0x0008;
+	pb->data.data = pb;
+	pb->fixture.userData = &pb->data;
 	pb->body->CreateFixture(&pb->fixture);
 	pb->body->SetFixedRotation(true);
 	m_physicsBodies.push_back(pb);
@@ -274,4 +357,41 @@ void Level::clearPhysicsBodies()
 		m_refWorld.DestroyBody(pb->body);
 	}
 	m_physicsBodies.clear();
+}
+
+void Level::clearTutorials()
+{
+	for (auto tut : m_tutorials)
+	{
+		m_refWorld.DestroyBody(tut->pb.body);
+	}
+	m_tutorials.clear();
+}
+
+void Level::unload()
+{
+	for (auto & row : m_tiles) {
+		for (auto & tile : row) {
+			if (nullptr != tile && nullptr != tile->body) {
+				m_refWorld.DestroyBody(tile->body);
+			}
+		}
+	}
+	m_tiles.clear();
+
+	/*for (auto kv : m_tilesets) {
+		if (nullptr != kv.second) {
+			SDL_DestroyTexture(kv.second);
+		}
+	}*/
+	m_tilesets.clear();
+	clearPhysicsBodies();
+	clearTutorials();
+}
+
+void Level::update()
+{
+	for (auto & tut : m_tutorials) {
+		tut->update();
+	}
 }

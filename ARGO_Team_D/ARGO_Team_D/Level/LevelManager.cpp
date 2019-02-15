@@ -1,0 +1,75 @@
+#include "LevelManager.h"
+#include "../ECS/Components/PositionComponent.h"
+#include "../ECS/Components/SpriteComponent.h"
+#include "../ECS/Components/BodyComponent.h"
+
+LevelManager::LevelManager()
+{
+	m_currentLevel = 0;
+}
+
+LevelManager::~LevelManager()
+{
+}
+
+void LevelManager::update(const float dt)
+{
+	m_levels[m_currentLevel]->update();
+}
+
+void LevelManager::render(SDL_Renderer * renderer, Camera & camera)
+{
+	m_levels[m_currentLevel]->render(renderer, camera);
+}
+
+void LevelManager::loadCurrentLevel(ResourceManager & resourceManager, SDL_Renderer * renderer)
+{
+	m_levels[m_currentLevel]->load(m_levelPaths[m_currentLevel], &resourceManager, renderer);
+}
+
+void LevelManager::parseLevelSystem(const std::string & filepath, b2World & world, const float worldScale, TTF_Font * font)
+{
+	using json = nlohmann::json;
+	std::ifstream levelFile(filepath);
+	json jFile = json::parse(levelFile);
+
+	std::map<std::string, std::vector<std::string>> jsonLevelFile = jFile;
+	for (auto & fp : jsonLevelFile["LevelSystem"]) {
+		m_levelPaths.push_back(fp);
+	}
+	m_levels.resize(m_levelPaths.size());
+	for (int i = 0; i < m_levelPaths.size(); ++i) {
+		m_levels[i] = new Level(world, worldScale, font);
+	}
+	levelFile.close();
+}
+
+void LevelManager::checkPlayerCollisions(Entity * e, ResourceManager & rm, const float worldScale, SDL_Renderer * renderer)
+{
+	std::vector<std::string> allowedTypes = {"Position", "Sprite", "Body"};
+	auto comps = e->getComponentsOfType(allowedTypes);
+	if (comps.size() == allowedTypes.size()) {
+		auto pos = dynamic_cast<PositionComponent *>(comps["Position"]);
+		auto sprite = dynamic_cast<SpriteComponent*>(comps["Sprite"]);
+		auto body = dynamic_cast<BodyComponent*>(comps["Body"]);
+		auto p = pos->getPosition();
+		auto goal = m_levels[m_currentLevel]->m_goal;
+		if (p.x + sprite->m_width > goal.x
+			&& p.x < goal.x + goal.w
+			&& p.y + sprite->m_height > goal.y
+			&& p.y <  goal.y + goal.h) {
+			m_levels[m_currentLevel]->unload();
+
+			if (m_currentLevel != m_levels.size() - 1) {
+				m_currentLevel++;
+			}
+			else {
+				m_currentLevel = 0;
+			}
+			loadCurrentLevel(rm, renderer);
+			auto startPos = m_levels[m_currentLevel]->m_startPos;
+			pos->setPosition(startPos);
+			body->getBody()->SetTransform(b2Vec2(startPos.x / worldScale, startPos.y / worldScale), 0);
+		}
+	}
+}

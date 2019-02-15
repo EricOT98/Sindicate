@@ -3,12 +3,16 @@
 
 #include <tmxlite/Map.hpp>
 #include <tmxlite/TileLayer.hpp>
+#include <tmxlite/Object.hpp>
+
 #include <SDL.h>
+#include <SDL_ttf.h>
 #include <map>
-#include <Box2D/Box2D.h>
 
 #include "../Resource Manager/ResourceManager.h"
 #include "../Camera.h"
+#include "../Utils/PhysicsBody.h"
+#include "../Utils/TutorialTrigger.h"
 
 struct TileData {
 	int destX;
@@ -20,26 +24,23 @@ struct TileData {
 	b2Body * body = nullptr;
 	b2PolygonShape shape;
 	b2FixtureDef fixture;
-};
-
-struct PhysicsBody {
-	b2BodyDef bodyDef;
-	b2Body * body = nullptr;
-	b2PolygonShape shape;
-	b2FixtureDef fixture;
+	bool destructible;
 };
 
 class Level {
 public:
 	// Public Functions
-	Level(b2World & world, const float worldScale);
+	Level(b2World & world, const float worldScale, TTF_Font * font);
 	~Level();
-	bool load(const std::string filepath, ResourceManager * rManager);
+	bool load(const std::string filepath, ResourceManager * rManager, SDL_Renderer * renderer);
 	void parseTMXTileLayer(const std::unique_ptr<tmx::Layer> & layer, int layerNum);
-	void parseTMXObjectLayer(const std::unique_ptr<tmx::Layer> & layer, int layerNum);
+	void parseTMXObjectLayer(const std::unique_ptr<tmx::Layer> & layer, int layerNum, SDL_Renderer * renderer);
 	void render(SDL_Renderer * renderer, Camera &camera);
 	void createBody(float startX, float startY, float width);
 	void clearPhysicsBodies();
+	void clearTutorials();
+	void unload();
+	void update();
 
 	// Public Members
 	b2World & m_refWorld;
@@ -52,6 +53,10 @@ public:
 	std::vector<std::vector<TileData*>> m_tiles;
 	tmx::Map m_map;
 	std::vector<PhysicsBody *> m_physicsBodies;
+	std::vector<TutorialTrigger*> m_tutorials;
+	SDL_Rect m_goal;
+	VectorAPI m_startPos;
+	TTF_Font * m_font;
 };
 
 #endif // !LEVEL_H
