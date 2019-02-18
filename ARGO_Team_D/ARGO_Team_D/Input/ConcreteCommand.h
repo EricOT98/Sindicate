@@ -3,7 +3,7 @@
 
 #include "Command.h"
 #include <iostream>
-#include "ControlSystem.h"
+#include "../ECS/Systems/ControlSystem.h"
 
 // Jump Command
 class JumpCommand : public Command {

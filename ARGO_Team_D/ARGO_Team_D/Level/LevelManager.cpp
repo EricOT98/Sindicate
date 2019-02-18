@@ -27,7 +27,7 @@ void LevelManager::loadCurrentLevel(ResourceManager & resourceManager, SDL_Rende
 	m_levels[m_currentLevel]->load(m_levelPaths[m_currentLevel], &resourceManager, renderer);
 }
 
-void LevelManager::parseLevelSystem(const std::string & filepath, b2World & world, const float worldScale, TTF_Font * font)
+void LevelManager::parseLevelSystem(const std::string & filepath, b2World & world, const float worldScale, TTF_Font * font, std::vector<Enemy *> & gunEnemies, std::vector<Enemy *> & flyEnemies, std::vector<Enemy *> & bigEnemies)
 {
 	using json = nlohmann::json;
 	std::ifstream levelFile(filepath);
@@ -39,7 +39,7 @@ void LevelManager::parseLevelSystem(const std::string & filepath, b2World & worl
 	}
 	m_levels.resize(m_levelPaths.size());
 	for (int i = 0; i < m_levelPaths.size(); ++i) {
-		m_levels[i] = new Level(world, worldScale, font);
+		m_levels[i] = new Level(world, worldScale, font, gunEnemies, flyEnemies, bigEnemies);
 	}
 	levelFile.close();
 }

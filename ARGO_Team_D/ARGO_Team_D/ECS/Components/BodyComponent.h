@@ -7,7 +7,7 @@
 // Includes
 #include <Box2D/Box2D.h>
 #include "..\Utils\VectorAPI.h"
-#include "../Level/Level.h"
+#include "..\Utils\CollisionData.h"
 
 /// <summary>
 /// Box2D Body Component
@@ -22,8 +22,14 @@ public:
 	bool isCircle();
 	VectorAPI getDimensions();
 	bool isOnGround();
+	bool isLeftContact();
+	bool isRightContact();
 	void groundContactStart();
 	void groundContactEnd();
+	void leftContactStart();
+	void leftContactEnd();
+	void rightContactStart();
+	void rightContactEnd();
 
 private:
 	// Private Functions
@@ -43,11 +49,25 @@ private:
 	b2FixtureDef m_fixtureDef;
 	VectorAPI m_dimensions;
 
-	// Sensor Body
+	// Sensor Bodies
+
+	// Ground
 	b2PolygonShape * m_groundSensorShape;
 	b2FixtureDef m_groundFixtureDef;
 	bool m_onGround;
-	CollisionData m_data;
+	CollisionData m_groundData;
+
+	// Left
+	b2PolygonShape * m_leftSensorShape;
+	b2FixtureDef m_leftFixtureDef;
+	bool m_leftContact;
+	CollisionData m_leftData;
+
+	// Right
+	b2PolygonShape * m_rightSensorShape;
+	b2FixtureDef m_rightFixtureDef;
+	bool m_rightContact;
+	CollisionData m_rightData;
 };
 
 #endif // !BODYCOMPONENT_H

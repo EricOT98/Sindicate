@@ -7,22 +7,22 @@
 #include <SDL_image.h>
 #include <SDL_mixer.h>
 #include <SDL_haptic.h>
-
-
 #include "ECS/Entities/Entity.h"
 #include "ECS/Systems/RenderSystem.h"
 #include "ECS/Systems/PhysicsSystem.h"
 #include "ECS/Systems/AnimationSystem.h"
+#include "ECS/Systems/AiSystem.h"
 #include "ECS/Components/PositionComponent.h"
 #include "ECS/Components/SpriteComponent.h"
 #include <tmxlite/Map.hpp>
-#include "InputHandler.h"
+#include "Input/InputHandler.h"
 #include "Resource Manager/ResourceManager.h"
-#include "ControlSystem.h"
+#include "ECS/Systems/ControlSystem.h"
 #include <Box2D\Box2D.h>
 #include "Level/LevelManager.h"
 #include "Factories/Factory.h"
 #include "Factories/PlayerFactory.h"
+#include "Factories/EnemyFactory.h"
 #include "Menu/Button.h"
 #include "Menu/MainMenu.h"
 #include "Menu/OptionsMenu.h"
@@ -38,6 +38,7 @@
 #include "ECS/Components/TimeToLiveComponent.h"
 #include "ECS/Systems/TimeToLiveSystem.h"
 #include "ECS/Components/GunComponent.h"
+#include "ECS/Components//AiComponent.h"
 #include <stdlib.h>
 #include <time.h>
 #include <functional>
@@ -98,12 +99,19 @@ private:
 	// ECS Entities
 	std::vector<Entity*> m_entityList;
 	Entity * m_player;
+	const int GUN_ENEMY_COUNT = 20;
+	const int FLY_ENEMY_COUNT = 20;
+	const int BIG_ENEMY_COUNT = 2;
+	std::vector<Enemy *> m_gunEnemies;
+	std::vector<Enemy *> m_flyEnemies;
+	std::vector<Enemy *> m_bigEnemies;
 
 	// ECS Components
 	BodyComponent * m_playerBody;
 
 	// Factories
 	PlayerFactory * m_playerFactory;
+	EnemyFactory * m_enemyFactory;
 
 	// Misc
 	Camera m_camera;
@@ -115,6 +123,7 @@ private:
 	MovementSystem m_movementSystem;
 	TimeToLiveSystem m_ttlSystem;
 	AnimationSystem m_animationSystem;
+	AiSystem * m_aiSystem;
 
 	// Input
 	InputHandler * inputHandler;

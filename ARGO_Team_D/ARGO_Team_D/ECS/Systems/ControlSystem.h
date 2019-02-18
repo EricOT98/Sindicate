@@ -3,17 +3,17 @@
 
 #include <SDL.h>
 #include <iostream>
-#include "ECS/Components/Components.h"
-#include "ECS/Systems/System.h"
-#include "ECS/Components/BodyComponent.h"
-#include "ECS/Components/AnimationComponent.h"
-#include "Utils/VectorAPI.h"
 #include <functional>   // std::function, std::negate
+#include "../ECS/Components/Components.h"
+#include "../ECS/Systems/System.h"
+#include "../ECS/Components/BodyComponent.h"
+#include "../ECS/Components/AnimationComponent.h"
 #include "../ECS/Components/PositionComponent.h"
-#include "ECS/Entities/Entity.h"
-#include "ECS/Components/TimeToLiveComponent.h"
-#include "ECS/Components/VelocityComponent.h"
-#include "ECS/Components/GunComponent.h"
+#include "../ECS/Entities/Entity.h"
+#include "../ECS/Components/TimeToLiveComponent.h"
+#include "../ECS/Components/VelocityComponent.h"
+#include "../ECS/Components/GunComponent.h"
+#include "../Utils/VectorAPI.h"
 
 struct ControlComponents {
 	BodyComponent * body;

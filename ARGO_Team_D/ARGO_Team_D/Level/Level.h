@@ -8,11 +8,14 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <map>
+#include <vector>
 
 #include "../Resource Manager/ResourceManager.h"
 #include "../Camera.h"
 #include "../Utils/PhysicsBody.h"
 #include "../Utils/TutorialTrigger.h"
+#include "../ECS/Components/AiComponent.h"
+#include "../Factories/EnemyFactory.h"
 
 struct TileData {
 	int destX;
@@ -30,7 +33,7 @@ struct TileData {
 class Level {
 public:
 	// Public Functions
-	Level(b2World & world, const float worldScale, TTF_Font * font);
+	Level(b2World & world, const float worldScale, TTF_Font * font, std::vector<Enemy *> & gunEnemies, std::vector<Enemy *> & flyEnemies, std::vector<Enemy *> & bigEnemies);
 	~Level();
 	bool load(const std::string filepath, ResourceManager * rManager, SDL_Renderer * renderer);
 	void parseTMXTileLayer(const std::unique_ptr<tmx::Layer> & layer, int layerNum);
@@ -57,6 +60,9 @@ public:
 	SDL_Rect m_goal;
 	VectorAPI m_startPos;
 	TTF_Font * m_font;
+	std::vector<Enemy *> & m_gunEnemies;
+	std::vector<Enemy *> & m_flyEnemies;
+	std::vector<Enemy *> & m_bigEnemies;
 };
 
 #endif // !LEVEL_H

@@ -1,7 +1,8 @@
 #ifndef COMMAND_H
 #define COMMAND_H
 
-#include"ControlSystem.h"
+#include "../ECS/Systems/ControlSystem.h"
+
 class Command {
 public:
 	Command(ControlSystem & system);

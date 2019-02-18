@@ -15,7 +15,11 @@ BodyComponent::BodyComponent(float x, float y, float w, float h, b2World & world
 	m_isCircle(false),
 	m_dimensions(w, h),
 	m_onGround(false),
-	m_data("Body", this)
+	m_groundData("BodyGround", this),
+	m_leftContact(false),
+	m_leftData("BodyLeft", this),
+	m_rightContact(false),
+	m_rightData("BodyRight", this)
 {
 	float halfWidth = w / 2.f;
 	float halfHeight = h / 2.f;
@@ -39,7 +43,11 @@ BodyComponent::BodyComponent(float x, float y, float rad, b2World & world, float
 	m_isCircle(true),
 	m_dimensions(rad, rad),
 	m_onGround(false),
-	m_data("Body", this)
+	m_groundData("BodyGround", this),
+	m_leftContact(false),
+	m_leftData("BodyLeft", this),
+	m_rightContact(false),
+	m_rightData("BodyRight", this)
 {
 	float halfRad = rad / 2.f;
 	b2CircleShape * circleShape = new b2CircleShape();
@@ -95,6 +103,24 @@ bool BodyComponent::isOnGround()
 }
 
 /// <summary>
+/// Function used to check whether the Box2D body is currently toucing something on the left
+/// </summary>
+/// <returns>Bool representing whether the body is contacting the left</returns>
+bool BodyComponent::isLeftContact()
+{
+	return m_leftContact;
+}
+
+/// <summary>
+/// Function used to check whether the Box2D body is currently toucing something on the left
+/// </summary>
+/// <returns>Bool representing whether the body is contacting the right</returns>
+bool BodyComponent::isRightContact()
+{
+	return m_rightContact;
+}
+
+/// <summary>
 /// Init is used to reduce code repetition in the constructor functions
 /// common code is here
 /// </summary>
@@ -122,12 +148,33 @@ void BodyComponent::init(float x, float y, float w, float h)
 	m_groundSensorShape->SetAsBox((halfWidth / m_worldScale) / 2.f, (halfHeight / m_worldScale) / 10.f, b2Vec2(0, halfHeight / m_worldScale), 0);
 	m_groundFixtureDef.shape = m_groundSensorShape;
 	m_groundFixtureDef.isSensor = true;
-	m_groundFixtureDef.userData = &m_data;
+	m_groundFixtureDef.userData = &m_groundData;
 	m_groundFixtureDef.filter.categoryBits = 0x0004;
 	m_groundFixtureDef.filter.maskBits = 0x0008;
 	b2Fixture * footSensorFixture = m_body->CreateFixture(&m_groundFixtureDef);
-	//footSensorFixture->SetUserData(this);
-	footSensorFixture->SetUserData(&m_data);
+	footSensorFixture->SetUserData(&m_groundData);
+
+	// Sensor checks if the body has contact to the left
+	m_leftSensorShape = new b2PolygonShape();
+	m_leftSensorShape->SetAsBox((halfWidth / m_worldScale) / 10.f, (halfHeight / m_worldScale) / 2.f, b2Vec2(-halfWidth / m_worldScale, 0), 0);
+	m_leftFixtureDef.shape = m_leftSensorShape;
+	m_leftFixtureDef.isSensor = true;
+	m_leftFixtureDef.userData = &m_leftData;
+	m_leftFixtureDef.filter.categoryBits = 0x0004;
+	m_leftFixtureDef.filter.maskBits = 0x0008;
+	b2Fixture * leftSensorFixture = m_body->CreateFixture(&m_leftFixtureDef);
+	leftSensorFixture->SetUserData(&m_leftData);
+
+	// Sensor checks if the body has contact to the right
+	m_rightSensorShape = new b2PolygonShape();
+	m_rightSensorShape->SetAsBox((halfWidth / m_worldScale) / 10.f, (halfHeight / m_worldScale) / 2.f, b2Vec2(halfWidth / m_worldScale, 0), 0);
+	m_rightFixtureDef.shape = m_rightSensorShape;
+	m_rightFixtureDef.isSensor = true;
+	m_rightFixtureDef.userData = &m_rightData;
+	m_rightFixtureDef.filter.categoryBits = 0x0004;
+	m_rightFixtureDef.filter.maskBits = 0x0008;
+	b2Fixture * rightSensorFixture = m_body->CreateFixture(&m_rightFixtureDef);
+	rightSensorFixture->SetUserData(&m_rightData);
 }
 
 /// <summary>
@@ -144,4 +191,36 @@ void BodyComponent::groundContactStart()
 void BodyComponent::groundContactEnd()
 {
 	m_onGround = false;
+}
+
+/// <summary>
+/// Function used by Box2D to inform Body Component that it's touching on its' left
+/// </summary>
+void BodyComponent::leftContactStart()
+{
+	m_leftContact = true;
+}
+
+/// <summary>
+/// Function used by Box2D to inform Body Component that it's not touching on its' left
+/// </summary>
+void BodyComponent::leftContactEnd()
+{
+	m_leftContact = false;
+}
+
+/// <summary>
+/// Function used by Box2D to inform Body Component that it's touching on its' right
+/// </summary>
+void BodyComponent::rightContactStart()
+{
+	m_rightContact = true;
+}
+
+/// <summary>
+/// Function used by Box2D to inform Body Component that it's not touching on its' right
+/// </summary>
+void BodyComponent::rightContactEnd()
+{
+	m_rightContact = false;
 }
