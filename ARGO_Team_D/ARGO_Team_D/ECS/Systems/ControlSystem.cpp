@@ -1,5 +1,4 @@
 #include "ControlSystem.h"
-#include "ECS/Components/AnimationComponent.h"
 
 ControlSystem::ControlSystem()
 {

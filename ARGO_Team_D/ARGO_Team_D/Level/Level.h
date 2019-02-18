@@ -8,11 +8,13 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <map>
+#include <vector>
 
 #include "../Resource Manager/ResourceManager.h"
 #include "../Camera.h"
 #include "../Utils/PhysicsBody.h"
 #include "../Utils/TutorialTrigger.h"
+#include "../ECS/Components/AiComponent.h"
 
 struct TileData {
 	int destX;
@@ -57,6 +59,9 @@ public:
 	SDL_Rect m_goal;
 	VectorAPI m_startPos;
 	TTF_Font * m_font;
+	//std::vector<Enemy *> & m_gunEnemies;
+	//std::vector<Enemy *> & m_flyEnemies;
+	//std::vector<Enemy *> & m_bigEnemies;
 };
 
 #endif // !LEVEL_H

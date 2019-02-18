@@ -12,6 +12,7 @@
 #include "../Camera.h"
 #include "Level.h"
 #include "../ECS/Entities/Entity.h"
+#include "../Factories/EnemyFactory.h"
 
 class LevelManager {
 public:
@@ -20,7 +21,7 @@ public:
 	void update(const float dt);
 	void render(SDL_Renderer * renderer, Camera & camera);
 	void loadCurrentLevel(ResourceManager & resourceManager, SDL_Renderer * renderer);
-	void parseLevelSystem(const std::string & filepath, b2World & world, const float worldScale, TTF_Font * font);
+	void parseLevelSystem(const std::string & filepath, b2World & world, const float worldScale, TTF_Font * font, std::vector<AiComponent *> & gunEnemies, std::vector<AiComponent *> & flyEnemies, std::vector<AiComponent *> & bigEnemies);
 	void checkPlayerCollisions(Entity * e, ResourceManager & rm, const float worldScale, SDL_Renderer * renderer);
 protected:
 	TTF_Font * m_font;

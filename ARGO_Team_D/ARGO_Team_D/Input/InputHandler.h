@@ -5,7 +5,8 @@
 #include "ConcreteCommand.h"
 #include "SDL.h"
 #include <vector>
-#include "ControlSystem.h"
+#include "../ECS/Systems/ControlSystem.h"
+
 class InputHandler {
 public:
 	InputHandler(ControlSystem & system, SDL_Joystick& controller, SDL_Haptic& haptic);

@@ -91,14 +91,10 @@ Game::Game() :
 		cout << "Loading..." << endl;
 	}
 
-	texture = m_resourceManager->getImageResource("test");
-	square = m_resourceManager->getImageResource("testsquare");
-	bulletTexture = m_resourceManager->getImageResource("bullet");
-
-	m_testMusic = m_resourceManager->getSoundResource("test");
-	/*if (Mix_PlayMusic(m_testMusic, -1) == -1)
-	{
-	}*/
+	//m_testMusic = m_resourceManager->getSoundResource("test");
+	//if (Mix_PlayMusic(m_testMusic, -1) == -1)
+	//{
+	//}
 
 	m_gameState = State::Menu;
 	m_menu = new MainMenu(m_windowWidth, m_windowHeight, *this, m_renderer, p_window);
@@ -113,8 +109,7 @@ Game::Game() :
 
 	inputHandler = new InputHandler(m_controlSystem, *gGameController, *gControllerHaptic);
 
-
-	for (int i = 0; i < 30; i++)
+	for (int i = 0; i < 1; i++)
 	{
 		Entity * e = new Entity();
 		e->addComponent(new PositionComponent(-10000, -10000));
@@ -129,29 +124,22 @@ Game::Game() :
 	}
 	m_controlSystem.bindBullets(m_bullets);
 	srand(time(NULL));
+	m_levelManager.parseLevelSystem("ASSETS/LEVELS/LevelSystem.json", m_world, WORLD_SCALE, Sans, m_gunEnemies, m_flyEnemies, m_bigEnemies);
 
-	Entity * e2 = new Entity();
-	AnimationComponent * a = new AnimationComponent();
-	std::vector<SDL_Rect> frames;
-	for (int i = 0; i < 5; ++i) {
-		SDL_Rect frame = { i * 86, 0, 86, 86 };
-		frames.push_back(frame);
-	}
-	a->addAnimation("Idle", frames, 1, 1, true);
-
-	frames.clear();
-	for (int i = 0; i < 5; ++i) {
-		SDL_Rect frame = { i * 86, 86, 86, 86 };
-		frames.push_back(frame);
-	}
-	a->addAnimation("Walking", frames, 1, 1, true);
-	e2->addComponent(new SpriteComponent("TestAnimation", *m_resourceManager, 100, 100));
-	e2->addComponent(a);
-	e2->addComponent(new PositionComponent(200, 400));
-	m_controlSystem.addEntity(e2);
-	m_animationSystem.addEntity(e2);
-	m_renderSystem.addEntity(e2);
-	m_levelManager.parseLevelSystem("ASSETS/LEVELS/LevelSystem.json", m_world, WORLD_SCALE, Sans);
+	//float enemyX = 100;
+	//float enemyY = 100;
+	//float enemyWidth = 100;
+	//float enemyHeight = 100;
+	//std::string name = "TestAnimation";
+	//Entity * enemy = new Entity();
+	//enemy->addComponent(new BodyComponent(enemyX, enemyY, enemyWidth, enemyHeight, m_world, WORLD_SCALE));
+	//enemy->addComponent(new PositionComponent(enemyX, enemyY));
+	//enemy->addComponent(new SpriteComponent(name, *m_resourceManager, enemyX, enemyY));
+	////enemy->addComponent(new AnimationComponent());
+	//enemy->addComponent(new AiComponent(AiType::EnemyGun, 0, 200));
+	//m_renderSystem.addEntity(enemy);
+	//m_physicsSystem.addEntity(enemy);
+	////m_animationSystem.addEntity(enemy);
 }
 
 Game::~Game()
@@ -269,6 +257,7 @@ void Game::update(const float & dt)
 		if (doneFading) // dont update the game unless screen is done fading
 		{
 			m_controlSystem.update();
+			m_aiSystem->update();
 			m_world.Step(1 / 60.f, 10, 5); // Update the Box2d world
 			m_physicsSystem.update();
 			m_camera.update(VectorAPI(m_playerBody->getBody()->GetPosition().x * WORLD_SCALE, m_playerBody->getBody()->GetPosition().y * WORLD_SCALE), 0);
@@ -411,6 +400,24 @@ void Game::initialiseEntities()
 	m_controlSystem.addEntity(e);
 	m_player = e;
 	m_playerBody = dynamic_cast<BodyComponent*>(e->getComponentsOfType({ "Body" })["Body"]);
+	for(int i = 0; i < GUN_ENEMY_COUNT; ++i)
+	{
+		EnemyData * enemy = m_enemyFactory->createGunEnemy();
+		m_gunEnemies.push_back(enemy->ai);
+		m_entityList.push_back(enemy->entity);
+	}
+	for (int i = 0; i < FLY_ENEMY_COUNT; ++i)
+	{
+		EnemyData * enemy = m_enemyFactory->createFlyEnemy();
+		m_flyEnemies.push_back(enemy->ai);
+		//m_entityList.push_back(m_flyEnemies.at(i)->entity);
+	}
+	for (int i = 0; i < BIG_ENEMY_COUNT; ++i)
+	{
+		EnemyData * enemy = m_enemyFactory->createBigEnemy();
+		m_bigEnemies.push_back(enemy->ai);
+		//m_entityList.push_back(m_bigEnemies.at(i)->entity);
+	}
 }
 
 /// <summary>
@@ -418,6 +425,7 @@ void Game::initialiseEntities()
 /// </summary>
 void Game::initialiseSystems()
 {
+	m_aiSystem = new AiSystem(m_playerBody);
 	for (auto i : m_entityList)
 	{
 		if (i->checkForComponent("Sprite"))
@@ -428,6 +436,10 @@ void Game::initialiseSystems()
 		{
 			m_physicsSystem.addEntity(i);
 		}
+		if (i->checkForComponent("Ai"))
+		{
+			m_aiSystem->addEntity(i);
+		}
 	}
 }
 
@@ -435,6 +447,7 @@ void Game::initialiseFactories()
 {
 	std::string spriteName = "test";
 	m_playerFactory = new PlayerFactory(spriteName, VectorAPI(64, 64), m_resourceManager, m_world, WORLD_SCALE);
+	m_enemyFactory = new EnemyFactory(m_resourceManager, m_world, WORLD_SCALE);
 }
 
 /// <summary>

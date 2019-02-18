@@ -5,7 +5,10 @@
 Level::Level(b2World & world, float worldScale, TTF_Font * font)
 	: m_refWorld(world),
 	m_worldScale(worldScale),
-	m_font(font)
+	m_font(font)//, 
+	//m_gunEnemies(gunEnemies),
+	//m_flyEnemies(flyEnemies),
+	//m_bigEnemies(bigEnemies)
 {
 }
 

@@ -3,23 +3,13 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Client\Client.cpp" />
-    <ClCompile Include="Command.cpp" />
-    <ClCompile Include="ConcreteCommand.cpp" />
     <ClCompile Include="ECS\Components\BodyComponent.cpp" />
     <ClCompile Include="ECS\Components\PositionComponent.cpp" />
-    <ClCompile Include="ECS\Systems\NetworkingSystem.cpp" />
-    <ClCompile Include="ECS\Systems\AnimationSystem.cpp" />
-    <ClCompile Include="ECS\Systems\MovementSystem.cpp" />
-    <ClCompile Include="ECS\Systems\PhysicsSystem.cpp" />
-    <ClCompile Include="ECS\Systems\RenderSystem.cpp" />
-    <ClCompile Include="ControlSystem.cpp" />
     <ClCompile Include="FSM\Animation.cpp" />
     <ClCompile Include="FSM\IdleState.cpp" />
     <ClCompile Include="FSM\WalkingState.cpp" />
     <ClCompile Include="Factories\PlayerFactory.cpp" />
-    <ClCompile Include="ECS\Systems\TimeToLiveSystem.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="Level\Level.cpp" />
     <ClCompile Include="Level\LevelManager.cpp" />
     <ClCompile Include="main.cpp" />
@@ -36,12 +26,23 @@
     <ClCompile Include="Utils\ContactListener.cpp" />
     <ClCompile Include="Utils\VectorAPI.cpp" />
     <ClCompile Include="Utils\MathUtils.cpp" />
+    <ClCompile Include="Input\InputHandler.cpp" />
+    <ClCompile Include="ECS\Systems\AnimationSystem.cpp" />
+    <ClCompile Include="ECS\Systems\ControlSystem.cpp" />
+    <ClCompile Include="ECS\Systems\MovementSystem.cpp" />
+    <ClCompile Include="ECS\Systems\NetworkingSystem.cpp" />
+    <ClCompile Include="ECS\Systems\PhysicsSystem.cpp" />
+    <ClCompile Include="ECS\Systems\RenderSystem.cpp" />
+    <ClCompile Include="ECS\Systems\TimeToLiveSystem.cpp" />
+    <ClCompile Include="Input\Command.cpp" />
+    <ClCompile Include="Input\ConcreteCommand.cpp" />
+    <ClCompile Include="Factories\EnemyFactory.cpp" />
+    <ClCompile Include="ECS\Systems\AiSystem.cpp" />
+    <ClCompile Include="ECS\Components\AiComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client\Client.h" />
     <ClInclude Include="Client\ParseUtils.h" />
-    <ClInclude Include="Command.h" />
-    <ClInclude Include="ConcreteCommand.h" />
     <ClInclude Include="ECS\Components\AnimationComponent.h" />
     <ClInclude Include="ECS\Components\BodyComponent.h" />
     <ClInclude Include="ECS\Components\Components.h" />
@@ -52,14 +53,7 @@
     <ClInclude Include="ECS\Components\TimeToLiveComponent.h" />
     <ClInclude Include="ECS\Components\VelocityComponent.h" />
     <ClInclude Include="ECS\Entities\Entity.h" />
-    <ClInclude Include="ECS\Systems\NetworkingSystem.h" />
-    <ClInclude Include="ECS\Systems\AnimationSystem.h" />
-    <ClInclude Include="ECS\Systems\MovementSystem.h" />
-    <ClInclude Include="ECS\Systems\PhysicsSystem.h" />
-    <ClInclude Include="ECS\Systems\RenderSystem.h" />
-    <ClInclude Include="ECS\Systems\System.h" />
     <ClInclude Include="Factories\PlayerFactory.h" />
-    <ClInclude Include="ECS\Systems\TimeToLiveSystem.h" />
     <ClInclude Include="Factories\Factory.h" />
     <ClInclude Include="FSM\Animation.h" />
     <ClInclude Include="FSM\AnimationState.h" />
@@ -67,7 +61,6 @@
     <ClInclude Include="FSM\IState.h" />
     <ClInclude Include="FSM\WalkingState.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Level\LevelManager.h" />
     <ClInclude Include="Level\Level.h" />
     <ClInclude Include="Camera.h" />
@@ -82,7 +75,6 @@
     <ClInclude Include="Observers\Subject.h" />
     <ClInclude Include="Resource Manager\ImageResource.h" />
     <ClInclude Include="Resource Manager\ResourceManager.h" />
-    <ClInclude Include="ControlSystem.h" />
     <ClInclude Include="Systems\RenderSystem.h" />
     <ClInclude Include="Systems\System.h" />
     <ClInclude Include="Utils\ContactListener.h" />
@@ -92,5 +84,19 @@
     <ClInclude Include="Utils\CollisionData.h" />
     <ClInclude Include="Utils\PhysicsBody.h" />
     <ClInclude Include="Utils\TutorialTrigger.h" />
+    <ClInclude Include="Input\InputHandler.h" />
+    <ClInclude Include="ECS\Systems\AnimationSystem.h" />
+    <ClInclude Include="ECS\Systems\ControlSystem.h" />
+    <ClInclude Include="ECS\Systems\MovementSystem.h" />
+    <ClInclude Include="ECS\Systems\NetworkingSystem.h" />
+    <ClInclude Include="ECS\Systems\PhysicsSystem.h" />
+    <ClInclude Include="ECS\Systems\RenderSystem.h" />
+    <ClInclude Include="ECS\Systems\System.h" />
+    <ClInclude Include="ECS\Systems\TimeToLiveSystem.h" />
+    <ClInclude Include="Input\Command.h" />
+    <ClInclude Include="Input\ConcreteCommand.h" />
+    <ClInclude Include="Factories\EnemyFactory.h" />
+    <ClInclude Include="ECS\Systems\AiSystem.h" />
+    <ClInclude Include="ECS\Components\AiComponent.h" />
   </ItemGroup>
 </Project>
