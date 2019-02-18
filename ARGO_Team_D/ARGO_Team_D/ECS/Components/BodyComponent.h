@@ -7,7 +7,7 @@
 // Includes
 #include <Box2D/Box2D.h>
 #include "..\Utils\VectorAPI.h"
-#include "../Level/Level.h"
+#include "..\Utils\CollisionData.h"
 
 /// <summary>
 /// Box2D Body Component

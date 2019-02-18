@@ -31,9 +31,10 @@ void AiSystem::update()
 		bool active = ac.ai->getActivationState();
 		auto body = ac.body->getBody();
 		ac.sprite->setRender(active);
-		if (ac.ai.)
+		if (ac.ai->getChangePositionStatus())
 		{
-
+			VectorAPI newPos = ac.ai->getPosition();
+			body->SetTransform(b2Vec2(newPos.x, newPos.y), body->GetAngle());
 		}
 		if (active)
 		{

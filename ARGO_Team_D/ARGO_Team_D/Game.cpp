@@ -402,21 +402,21 @@ void Game::initialiseEntities()
 	m_playerBody = dynamic_cast<BodyComponent*>(e->getComponentsOfType({ "Body" })["Body"]);
 	for(int i = 0; i < GUN_ENEMY_COUNT; ++i)
 	{
-		EnemyData * enemy = m_enemyFactory->createGunEnemy();
-		m_gunEnemies.push_back(enemy->ai);
+		Enemy * enemy = m_enemyFactory->createGunEnemy();
+		m_gunEnemies.push_back(enemy);
 		m_entityList.push_back(enemy->entity);
 	}
 	for (int i = 0; i < FLY_ENEMY_COUNT; ++i)
 	{
-		EnemyData * enemy = m_enemyFactory->createFlyEnemy();
-		m_flyEnemies.push_back(enemy->ai);
-		//m_entityList.push_back(m_flyEnemies.at(i)->entity);
+		//Enemy * enemy = m_enemyFactory->createFlyEnemy();
+		//m_flyEnemies.push_back(enemy);
+		////m_entityList.push_back(m_flyEnemies.at(i)->entity);
 	}
 	for (int i = 0; i < BIG_ENEMY_COUNT; ++i)
 	{
-		EnemyData * enemy = m_enemyFactory->createBigEnemy();
-		m_bigEnemies.push_back(enemy->ai);
-		//m_entityList.push_back(m_bigEnemies.at(i)->entity);
+		//Enemy * enemy = m_enemyFactory->createBigEnemy();
+		//m_bigEnemies.push_back(enemy);
+		////m_entityList.push_back(m_bigEnemies.at(i)->entity);
 	}
 }
 

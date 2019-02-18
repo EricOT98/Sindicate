@@ -2,13 +2,13 @@
 #include <iostream>
 
 
-Level::Level(b2World & world, float worldScale, TTF_Font * font)
+Level::Level(b2World & world, float worldScale, TTF_Font * font, std::vector<Enemy *> & gunEnemies, std::vector<Enemy *> & flyEnemies, std::vector<Enemy *> & bigEnemies)
 	: m_refWorld(world),
 	m_worldScale(worldScale),
-	m_font(font)//, 
-	//m_gunEnemies(gunEnemies),
-	//m_flyEnemies(flyEnemies),
-	//m_bigEnemies(bigEnemies)
+	m_font(font), 
+	m_gunEnemies(gunEnemies),
+	m_flyEnemies(flyEnemies),
+	m_bigEnemies(bigEnemies)
 {
 }
 
@@ -218,6 +218,8 @@ void Level::parseTMXObjectLayer(const std::unique_ptr<tmx::Layer>& layer, int la
 	auto* object_layer = dynamic_cast<const tmx::ObjectGroup*>(layer.get());
 	auto & layer_objects = object_layer->getObjects();
 
+	int enemyCounter = 0;
+
 	std::cout << "Name: " << object_layer->getName();
 	for (auto & object : layer_objects) {
 		std::string type = object.getType();
@@ -265,6 +267,14 @@ void Level::parseTMXObjectLayer(const std::unique_ptr<tmx::Layer>& layer, int la
 				tutorial->messageTexture = SDL_CreateTextureFromSurface(renderer, tutorial->messageSurface);
 				std::cout << "Tutorial: " << id->getIntValue() << " Message: " << tutorial->message << std::endl;
 			}
+		}
+		else if (type == "Enemy")
+		{
+			auto pos = object.getPosition();
+			m_gunEnemies.at(enemyCounter)->ai->setNewPosition(VectorAPI(pos.x / m_worldScale, pos.y / m_worldScale));
+			m_gunEnemies.at(enemyCounter)->ai->setMovementMarkers(0, 0);
+			m_gunEnemies.at(enemyCounter)->ai->setActivationState(true);
+			++enemyCounter;
 		}
 	}
 }

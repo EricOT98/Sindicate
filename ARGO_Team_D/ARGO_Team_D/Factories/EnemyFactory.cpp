@@ -11,34 +11,34 @@ EnemyFactory::~EnemyFactory()
 {
 }
 
-EnemyData * EnemyFactory::createGunEnemy()
+Enemy * EnemyFactory::createGunEnemy()
 {
-	EnemyData * enemy = createEnemy("test", 0, 0, 64, 64);
+	Enemy * enemy = createEnemy("test", 0, 0, 64, 64);
 	enemy->ai = new AiComponent(EnemyGun, 0, 0);
 	enemy->entity->addComponent(enemy->ai);
 	return enemy;
 }
 
-EnemyData * EnemyFactory::createFlyEnemy()
+Enemy * EnemyFactory::createFlyEnemy()
 {
-	EnemyData * enemy = createEnemy("test", 0, 0, 50, 50);
+	Enemy * enemy = createEnemy("test", 0, 0, 50, 50);
 	enemy->ai = new AiComponent(EnemyFly, 0, 0);
 	enemy->entity->addComponent(enemy->ai);
 	return enemy;
 }
 
-EnemyData * EnemyFactory::createBigEnemy()
+Enemy * EnemyFactory::createBigEnemy()
 {
-	EnemyData * enemy = createEnemy("test", 0, 0, 120, 120);
+	Enemy * enemy = createEnemy("test", 0, 0, 120, 120);
 	enemy->ai = new AiComponent(EnemyBig, 0, 0);
 	enemy->entity->addComponent(enemy->ai);
 	return enemy;
 }
 
-EnemyData * EnemyFactory::createEnemy(string spriteId, int idleFrames, int walkingFrames, int width, int height)
+Enemy * EnemyFactory::createEnemy(string spriteId, int idleFrames, int walkingFrames, int width, int height)
 {
 	// Create Enemy
-	EnemyData * enemy = new EnemyData();
+	Enemy * enemy = new Enemy();
 	enemy->entity = new Entity();
 
 	// Create Components

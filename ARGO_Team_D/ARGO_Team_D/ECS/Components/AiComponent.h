@@ -15,6 +15,7 @@ enum AiType
 class AiComponent : public Component
 {
 public:
+	// Public Functions
 	AiComponent(AiType type, int xMax, int xMin);
 	~AiComponent();
 	void setMovementMarkers(int min, int max);
@@ -22,12 +23,18 @@ public:
 	bool getActivationState();
 	void setNewPosition(VectorAPI pos);
 	VectorAPI getPosition();
+	bool getChangePositionStatus();
+	void setDirection(int direction);
+	int getDirection();
+	int getMinX();
+	int getMaxX();
 private:
+	// Private Members
 	AiType m_type;
 	bool m_active;
-	bool m_setPosition;
+	bool m_changePosition;
 	VectorAPI m_newPos;
-	int direction;
+	int m_direction;
 	int m_xMax;
 	int m_xMin;
 };

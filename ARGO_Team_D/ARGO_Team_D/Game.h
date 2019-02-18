@@ -102,9 +102,9 @@ private:
 	const int GUN_ENEMY_COUNT = 20;
 	const int FLY_ENEMY_COUNT = 20;
 	const int BIG_ENEMY_COUNT = 2;
-	std::vector<AiComponent *> m_gunEnemies;
-	std::vector<AiComponent *> m_flyEnemies;
-	std::vector<AiComponent *> m_bigEnemies;
+	std::vector<Enemy *> m_gunEnemies;
+	std::vector<Enemy *> m_flyEnemies;
+	std::vector<Enemy *> m_bigEnemies;
 
 	// ECS Components
 	BodyComponent * m_playerBody;

@@ -10,7 +10,7 @@
 #include "..//ECS/Components/AiComponent.h"
 #include "..//Client/Client.h"
 
-struct EnemyData
+struct Enemy
 {
 	Entity * entity = nullptr;
 	PositionComponent * position = nullptr;
@@ -26,13 +26,13 @@ public:
 	// Public Functions
 	EnemyFactory(ResourceManager * rm, b2World & world, const float SCALE);
 	~EnemyFactory();
-	EnemyData * createGunEnemy();
-	EnemyData * createFlyEnemy();
-	EnemyData * createBigEnemy();
+	Enemy * createGunEnemy();
+	Enemy * createFlyEnemy();
+	Enemy * createBigEnemy();
 
 private:
 	// Private Functions
-	EnemyData * createEnemy(string spriteId, int idleFrames, int walkingFrames, int width, int height);
+	Enemy * createEnemy(string spriteId, int idleFrames, int walkingFrames, int width, int height);
 
 	// Private Members
 	ResourceManager * m_resourceManager;
