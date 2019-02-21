@@ -39,7 +39,7 @@ bool Level::load(const std::string filepath, ResourceManager * rManager, SDL_Ren
 
 		auto & map_tilesets = m_map.getTilesets();
 		for (auto & tset : map_tilesets) {
-			rManager->addImageResource(new ImageResource, tset.getName(), tset.getImagePath().c_str());
+			//rManager->addImageResource(new ImageResource, tset.getName(), tset.getImagePath().c_str());
 			//if the tileset texture is loaded place it into the map with key being gid
 			SDL_Texture * tex = rManager->getImageResource(tset.getName());
 			if (tex) {
@@ -447,8 +447,10 @@ void Level::unload()
 			if (nullptr != tile && nullptr != tile->body) {
 				m_refWorld.DestroyBody(tile->body);
 				delete tile;
+				tile = nullptr;
 			}
 		}
+		row.clear();
 	}
 	m_tiles.clear();
 

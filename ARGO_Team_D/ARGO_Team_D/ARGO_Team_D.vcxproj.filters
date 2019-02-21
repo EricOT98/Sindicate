@@ -44,9 +44,10 @@
     <ClCompile Include="Particles\Timer.cpp" />
     <ClCompile Include="ECS\Components\ParticleEffectsComponent.cpp" />
     <ClCompile Include="ECS\Systems\ParticleSystem.cpp" />
-
     <ClCompile Include="Bullets\Bullet.cpp" />
     <ClCompile Include="Bullets\BulletManager.cpp" />
+    <ClCompile Include="Observers\LevelData.cpp" />
+    <ClCompile Include="Observers\levelObserver.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client\Client.h" />
@@ -114,5 +115,7 @@
     <ClInclude Include="ECS\Systems\ParticleSystem.h" />
     <ClInclude Include="Bullets\Bullet.h" />
     <ClInclude Include="Bullets\BulletManager.h" />
+    <ClInclude Include="Observers\LevelData.h" />
+    <ClInclude Include="Observers\levelObserver.h" />
   </ItemGroup>
 </Project>
