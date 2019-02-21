@@ -295,10 +295,18 @@ void Level::parseTMXObjectLayer(const std::unique_ptr<tmx::Layer>& layer, int la
 			}
 			else if (type == "FlyEnemy")
 			{
+				auto body = m_flyEnemies.at(flyEnemyCounter)->body->getBody();
+				body->SetTransform(b2Vec2(pos.x / m_worldScale, pos.y / m_worldScale), body->GetAngle());
+				m_flyEnemies.at(flyEnemyCounter)->ai->setMovementMarkers(min, max);
+				m_flyEnemies.at(flyEnemyCounter)->ai->setActivationState(true);
 				++flyEnemyCounter;
 			}
 			else if (type == "BigEnemy")
 			{
+				auto body = m_bigEnemies.at(bigEnemyCounter)->body->getBody();
+				body->SetTransform(b2Vec2(pos.x / m_worldScale, pos.y / m_worldScale), body->GetAngle());
+				m_bigEnemies.at(bigEnemyCounter)->ai->setMovementMarkers(min, max);
+				m_bigEnemies.at(bigEnemyCounter)->ai->setActivationState(true);
 				++bigEnemyCounter;
 			}
 		}
@@ -394,6 +402,7 @@ void Level::clearPhysicsBodies()
 	for (auto & pb : m_physicsBodies)
 	{
 		m_refWorld.DestroyBody(pb->body);
+		delete pb;
 	}
 	m_physicsBodies.clear();
 }
@@ -403,6 +412,7 @@ void Level::clearTutorials()
 	for (auto tut : m_tutorials)
 	{
 		m_refWorld.DestroyBody(tut->pb.body);
+		delete tut;
 	}
 	m_tutorials.clear();
 }
@@ -436,6 +446,7 @@ void Level::unload()
 		for (auto & tile : row) {
 			if (nullptr != tile && nullptr != tile->body) {
 				m_refWorld.DestroyBody(tile->body);
+				delete tile;
 			}
 		}
 	}
