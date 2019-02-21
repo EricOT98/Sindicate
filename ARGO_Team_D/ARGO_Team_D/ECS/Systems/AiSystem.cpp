@@ -31,8 +31,15 @@ void AiSystem::update()
 	for (auto & comp : m_components)
 	{
 		auto & ac = comp.second;
-		bool active = ac.ai->getActivationState();
+
 		auto body = ac.body->getBody();
+		if (ac.body->getBulletHitCount() > 3)
+		{
+			ac.ai->setActivationState(false);
+			ac.body->setBulletHitCount(0); // Reset bullet hit count
+			body->SetTransform(b2Vec2(-1000, 0), body->GetAngle());
+		}
+		bool active = ac.ai->getActivationState();
 		ac.sprite->setRender(active);
 		if (active)
 		{

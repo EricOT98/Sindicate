@@ -56,6 +56,7 @@ void BodyContactListener::BeginContact(b2Contact* contact)
 				player->setBulletHitCount(++currentHitCount);
 			}
 			data->remove();
+
 		}
 	}
 
