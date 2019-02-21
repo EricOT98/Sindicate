@@ -436,8 +436,11 @@ void Level::unload()
 		for (auto & tile : row) {
 			if (nullptr != tile && nullptr != tile->body) {
 				m_refWorld.DestroyBody(tile->body);
+				delete tile;
+				tile = nullptr;
 			}
 		}
+		row.clear();
 	}
 	m_tiles.clear();
 
