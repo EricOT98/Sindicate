@@ -47,6 +47,7 @@
 #include"Particles/Emitter.h"
 #include"ECS/Components/ParticleEffectsComponent.h"
 #include"ECS/Systems/ParticleSystem.h"
+#include "Bullets/BulletManager.h"
 
 class ControlSystem;
 class MainMenu;
@@ -174,5 +175,6 @@ private:
 	bool fire = false;
 	int test;
 
+	BulletManager * m_bulletManager;
 };
 #endif // !GAME_H

@@ -45,6 +45,8 @@
     <ClCompile Include="ECS\Components\ParticleEffectsComponent.cpp" />
     <ClCompile Include="ECS\Systems\ParticleSystem.cpp" />
 
+    <ClCompile Include="Bullets\Bullet.cpp" />
+    <ClCompile Include="Bullets\BulletManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client\Client.h" />
@@ -110,6 +112,7 @@
     <ClInclude Include="Particles\Timer.h" />
     <ClInclude Include="ECS\Components\ParticleEffectsComponent.h" />
     <ClInclude Include="ECS\Systems\ParticleSystem.h" />
-
+    <ClInclude Include="Bullets\Bullet.h" />
+    <ClInclude Include="Bullets\BulletManager.h" />
   </ItemGroup>
 </Project>
