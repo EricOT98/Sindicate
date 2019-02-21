@@ -19,8 +19,8 @@
 class BodyComponent : public Component {
 public:
 	// Public Functions
-	BodyComponent(float x, float y, float w, float h, b2World & world, float worldScale, std::string name);
-	BodyComponent(float x, float y, float rad, b2World & world, float worldScale, std::string name);
+	BodyComponent(float x, float y, float w, float h, b2World & world, float worldScale, std::string name, bool ignoreGravity);
+	BodyComponent(float x, float y, float rad, b2World & world, float worldScale, std::string name, bool ignoreGravity);
 	~BodyComponent();
 	b2Body * getBody();
 	bool isCircle();
@@ -39,7 +39,7 @@ public:
 
 private:
 	// Private Functions
-	void init(float x, float y, float w, float h);
+	void init(float x, float y, float w, float h, bool ignoreGravity);
 
 	// Private Members
 
