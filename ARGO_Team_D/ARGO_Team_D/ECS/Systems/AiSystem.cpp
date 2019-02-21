@@ -31,51 +31,88 @@ void AiSystem::update()
 	for (auto & comp : m_components)
 	{
 		auto & ac = comp.second;
-
 		auto body = ac.body->getBody();
-		if (ac.body->getBulletHitCount() > 3)
+		if (ac.body->getBulletHitCount() >= ac.ai->getMaxHits())
 		{
 			ac.ai->setActivationState(false);
 			ac.body->setBulletHitCount(0); // Reset bullet hit count
 			body->SetTransform(b2Vec2(-1000, 0), body->GetAngle());
 		}
-		bool active = ac.ai->getActivationState();
-		ac.sprite->setRender(active);
-		if (active)
+		else
 		{
-			auto body = ac.body->getBody();
+			bool active = ac.ai->getActivationState();
+			ac.sprite->setRender(active);
 			auto bodyPos = body->GetPosition();
 			auto bodyVel = body->GetLinearVelocity();
 			int minX = ac.ai->getMinX();
 			int maxX = ac.ai->getMaxX();
 			int direction = ac.ai->getDirection();
-			if(direction < 0)
+			if (active)
 			{
-				if ((bodyPos.x ) > minX / WORLD_SCALE)
+				if (AiType::EnemyFly == ac.ai->getType())
 				{
-					body->SetLinearVelocity(b2Vec2(-10, bodyVel.y));
+					VectorAPI dir;
+					if (false)
+					{
+
+					}
+					else
+					{
+						if (direction < 0)
+						{
+							if ((bodyPos.x) > minX / WORLD_SCALE)
+							{
+								body->SetLinearVelocity(b2Vec2(-10, 0));
+							}
+							else
+							{
+								ac.ai->setDirection(-direction);
+							}
+						}
+						else if (direction > 0)
+						{
+							if ((bodyPos.x) < maxX / WORLD_SCALE)
+							{
+								body->SetLinearVelocity(b2Vec2(10, 0));
+							}
+							else
+							{
+								ac.ai->setDirection(-direction);
+							}
+						}
+					}
 				}
 				else
 				{
-					ac.ai->setDirection(-direction);
+					if (direction < 0)
+					{
+						if ((bodyPos.x) > minX / WORLD_SCALE)
+						{
+							body->SetLinearVelocity(b2Vec2(-10, bodyVel.y));
+						}
+						else
+						{
+							ac.ai->setDirection(-direction);
+						}
+					}
+					else if (direction > 0)
+					{
+						if ((bodyPos.x) < maxX / WORLD_SCALE)
+						{
+							body->SetLinearVelocity(b2Vec2(10, bodyVel.y));
+						}
+						else
+						{
+							ac.ai->setDirection(-direction);
+						}
+					}
 				}
 			}
-			else if(direction > 0)
+			else
 			{
-				if ((bodyPos.x) < maxX / WORLD_SCALE)
-				{
-					body->SetLinearVelocity(b2Vec2(10, bodyVel.y));
-				}
-				else
-				{
-					ac.ai->setDirection(-direction);
-				}
+				body->SetLinearVelocity(b2Vec2(0, 0));
 			}
-		}
-		else
-		{
-			body->SetLinearVelocity(b2Vec2(0, 0));
-		}
+		}		
 	}
 }
 
@@ -89,3 +126,4 @@ void AiSystem::removeEntity(const int id)
 		return en->id == id;
 	}), m_entityList.end());
 }
+
