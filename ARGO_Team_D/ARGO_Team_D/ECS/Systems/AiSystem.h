@@ -10,6 +10,7 @@
 #include "../ECS/Components/AnimationComponent.h"
 #include "../ECS/Components/SpriteComponent.h"
 #include "../Bullets/BulletManager.h"
+#include "../Observers/LevelData.h"
 
 struct AiComponents
 {
@@ -23,7 +24,7 @@ class AiSystem : public System
 {
 public:
 	// Public Functions
-	AiSystem(BulletManager * bulletManager, BodyComponent * playerBody, const float SCALE);
+	AiSystem(BulletManager * bulletManager, BodyComponent * playerBody, const float SCALE, LevelData* levelData);
 	~AiSystem();
 	void addEntity(Entity * e) override;
 	void update();
@@ -39,7 +40,7 @@ private:
 	const float WORLD_SCALE;
 	std::vector<string> m_allowedTypes;
 	std::map<int, AiComponents> m_components;
-	const float DISTANCE_THRESHOLD;
+	LevelData *m_levelData;
 };
 
 #endif // !AISYSTEM_H

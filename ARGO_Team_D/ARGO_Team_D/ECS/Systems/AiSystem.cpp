@@ -1,10 +1,11 @@
 #include "AiSystem.h"
 
-AiSystem::AiSystem(BulletManager * bulletManager, BodyComponent * playerBody, const float SCALE) 
+AiSystem::AiSystem(BulletManager * bulletManager, BodyComponent * playerBody, const float SCALE, LevelData* levelData)
 	: m_bulletManager(bulletManager),
 	m_playerBody(playerBody),
 	WORLD_SCALE(SCALE),
-	DISTANCE_THRESHOLD(7.f)
+	DISTANCE_THRESHOLD(7.f),
+	m_levelData(levelData)
 {
 	m_allowedTypes = { "Body", "Animation", "Ai", "Sprite" };
 }
@@ -36,6 +37,7 @@ void AiSystem::update()
 		auto body = ac.body->getBody();
 		if (ac.body->getBulletHitCount() >= ac.ai->getMaxHits())
 		{
+			m_levelData->enemyKilled();
 			ac.ai->setActivationState(false);
 			ac.body->setBulletHitCount(0); // Reset bullet hit count
 			body->SetTransform(b2Vec2(-1000, 0), body->GetAngle());
