@@ -38,6 +38,7 @@ private:
 	BulletManager * m_bulletManager;
 	BodyComponent * m_playerBody;
 	const float WORLD_SCALE;
+	const float DISTANCE_THRESHOLD;
 	std::vector<string> m_allowedTypes;
 	std::map<int, AiComponents> m_components;
 	LevelData *m_levelData;
