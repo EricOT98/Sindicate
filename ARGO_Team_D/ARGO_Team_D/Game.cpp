@@ -177,7 +177,6 @@ void Game::processEvents()
 		case PlayScreen:
 			inputHandler->handleKeyboardInput(event);
 			inputHandler->handleControllerInput(event);
-			m_controlSystem.processInput(event);
 			break;
 		case Options:
 			m_options->handleInput(event);
@@ -412,18 +411,21 @@ void Game::initialiseEntities()
 		Enemy * enemy = m_enemyFactory->createGunEnemy();
 		m_gunEnemies.push_back(enemy);
 		m_entityList.push_back(enemy->entity);
+		m_animationSystem.addEntity(enemy->entity);
 	}
 	for (int i = 0; i < FLY_ENEMY_COUNT; ++i)
 	{
 		Enemy * enemy = m_enemyFactory->createFlyEnemy();
 		m_flyEnemies.push_back(enemy);
 		m_entityList.push_back(m_flyEnemies.at(i)->entity);
+		m_animationSystem.addEntity(enemy->entity);
 	}
 	for (int i = 0; i < BIG_ENEMY_COUNT; ++i)
 	{
 		Enemy * enemy = m_enemyFactory->createBigEnemy();
 		m_bigEnemies.push_back(enemy);
 		m_entityList.push_back(m_bigEnemies.at(i)->entity);
+		m_animationSystem.addEntity(enemy->entity);
 	}
 }
 
@@ -432,7 +434,7 @@ void Game::initialiseEntities()
 /// </summary>
 void Game::initialiseSystems()
 {
-	m_aiSystem = new AiSystem(m_playerBody, WORLD_SCALE, m_levelData);
+	m_aiSystem = new AiSystem(m_bulletManager, m_playerBody, WORLD_SCALE, m_levelData);
 	for (auto i : m_entityList)
 	{
 		if (i->checkForComponent("Sprite"))
