@@ -92,6 +92,7 @@ void AiSystem::handleGroundEnemy(AiComponents & ac)
 	if (DISTANCE_THRESHOLD > dist.Length())
 	{
 		body->SetLinearVelocity(b2Vec2(0, 0));
+		ac.animation->handleInput("Idle");
 	}
 	else
 	{
@@ -100,6 +101,7 @@ void AiSystem::handleGroundEnemy(AiComponents & ac)
 			if ((bodyPos.x) > minX / WORLD_SCALE)
 			{
 				body->SetLinearVelocity(b2Vec2(-10, bodyVel.y));
+				ac.animation->handleInput("Walking");
 			}
 			else
 			{
@@ -112,6 +114,7 @@ void AiSystem::handleGroundEnemy(AiComponents & ac)
 			if ((bodyPos.x) < maxX / WORLD_SCALE)
 			{
 				body->SetLinearVelocity(b2Vec2(10, bodyVel.y));
+				ac.animation->handleInput("Walking");
 			}
 			else
 			{
@@ -137,6 +140,7 @@ void AiSystem::handleFlyEnemy(AiComponents & ac)
 	if (DISTANCE_THRESHOLD > dist.Length())
 	{
 		body->SetLinearVelocity(b2Vec2(0, 0));
+		ac.animation->handleInput("Idle");
 	}
 	else
 	{
@@ -149,6 +153,7 @@ void AiSystem::handleFlyEnemy(AiComponents & ac)
 				newVelocity.Normalize();
 				newVelocity *= 10.f;
 				body->SetLinearVelocity(newVelocity);
+				ac.animation->handleInput("Walking");
 			}
 			else
 			{
@@ -164,6 +169,7 @@ void AiSystem::handleFlyEnemy(AiComponents & ac)
 				newVelocity.Normalize();
 				newVelocity *= 10.f;
 				body->SetLinearVelocity(newVelocity);
+				ac.animation->handleInput("Walking");
 			}
 			else
 			{

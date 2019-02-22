@@ -61,7 +61,7 @@ Enemy * EnemyFactory::createEnemy(string spriteId, int idleFrameCount, int walki
 		SDL_Rect frame = { i * width, height, width, height };
 		walkingFrames.push_back(frame);
 	}
-	a->addAnimation("Walking", walkingFrames, 1, 1, true);
+	a->addAnimation("Walking", walkingFrames, 1, 2, true);
 
 	enemy->animation = a;
 

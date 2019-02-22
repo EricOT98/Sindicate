@@ -177,7 +177,6 @@ void Game::processEvents()
 		case PlayScreen:
 			inputHandler->handleKeyboardInput(event);
 			inputHandler->handleControllerInput(event);
-			m_controlSystem.processInput(event);
 			break;
 		case Options:
 			m_options->handleInput(event);
