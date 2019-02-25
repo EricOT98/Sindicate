@@ -149,6 +149,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AI\PlayerAiSystem.cpp" />
     <ClCompile Include="Bullets\Bullet.cpp" />
     <ClCompile Include="Bullets\BulletManager.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -199,11 +200,16 @@
     <ClCompile Include="Resource Manager\ImageResource.cpp" />
     <ClCompile Include="Resource Manager\ResourceManager.cpp" />
     <ClCompile Include="Resource Manager\SoundResource.cpp" />
+    <ClCompile Include="Shader class\Shader.cpp" />
     <ClCompile Include="Utils\ContactListener.cpp" />
     <ClCompile Include="Utils\VectorAPI.cpp" />
     <ClCompile Include="Utils\MathUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AI\Actions.h" />
+    <ClInclude Include="AI\PlayerAiComponent.h" />
+    <ClInclude Include="AI\BehaviourTree.h" />
+    <ClInclude Include="AI\PlayerAiSystem.h" />
     <ClInclude Include="Bullets\Bullet.h" />
     <ClInclude Include="Bullets\BulletManager.h" />
     <ClInclude Include="Client\Client.h" />
@@ -267,6 +273,7 @@
     <ClInclude Include="Resource Manager\ImageResource.h" />
     <ClInclude Include="Resource Manager\ResourceManager.h" />
     <ClInclude Include="ECS\Systems\ControlSystem.h" />
+    <ClInclude Include="Shader class\Shader.h" />
     <ClInclude Include="Systems\RenderSystem.h" />
     <ClInclude Include="Systems\System.h" />
     <ClInclude Include="Utils\CollisionData.h" />

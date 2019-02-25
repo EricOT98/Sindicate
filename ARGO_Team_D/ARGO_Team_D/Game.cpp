@@ -112,11 +112,31 @@ Game::Game() :
 	m_levelData = new LevelData(3);
 	m_levelObserver = new LevelObserver(1);
 	m_levelData->registerObserver(m_levelObserver);
+
 	m_bulletManager = new BulletManager(m_world, WORLD_SCALE, m_resourceManager);
+
+	playeraiSystem = new PlayerAiSystem(m_bulletManager);
+
 	initialiseFactories();
 	initialiseEntities();
 	initialiseSystems();
 	setUpFont();
+
+	for (Enemy* i : m_flyEnemies) {
+		playeraiSystem->addEnemy(i);
+	}
+
+	for (Enemy* i : m_bigEnemies) {
+		playeraiSystem->addEnemy(i);
+	}
+
+	for (Enemy* i : m_gunEnemies) {
+		playeraiSystem->addEnemy(i);
+	}
+
+	aiComponent = new PlayerAiComponent(m_player);
+	playeraiSystem->addComponent(aiComponent);
+
 
 	inputHandler = new InputHandler(m_controlSystem, *gGameController, *gControllerHaptic);
 
@@ -207,7 +227,6 @@ void Game::processEvents()
 				break;
 			}
 
-
 		case SDL_KEYDOWN:
 
 			switch (m_gameState)
@@ -284,7 +303,9 @@ void Game::update(const float & dt)
 		if (doneFading) // dont update the game unless screen is done fading
 		{
 			m_controlSystem.update();
+			playeraiSystem->runTree();
 			m_aiSystem->update(dt);
+
 			m_world.Step(1 / 60.f, 10, 5); // Update the Box2d world
 			m_bulletManager->update(dt);
 			m_physicsSystem.update();
@@ -377,6 +398,7 @@ void Game::render()
 	case Pause:
 		m_renderSystem.render(m_renderer, m_camera);
 		m_levelManager.render(m_renderer, m_camera);
+		m_renderSystem.render(m_renderer, m_camera);
 		m_particleSystem->draw();
 		m_bulletManager->render(m_renderer, m_camera);
 		m_pauseScreen->drawBackground();
@@ -480,6 +502,8 @@ void Game::initialiseEntities()
 	m_animationSystem.addEntity(e);
 	m_player = e;
 	m_playerBody = dynamic_cast<BodyComponent*>(e->getComponentsOfType({ "Body" })["Body"]);
+	playeraiSystem->addEntity(m_player);
+
 	for(int i = 0; i < GUN_ENEMY_COUNT; ++i)
 	{
 		Enemy * enemy = m_enemyFactory->createGunEnemy();

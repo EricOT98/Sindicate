@@ -97,9 +97,6 @@ void LevelManager::loadLevel(Entity * e,ResourceManager & resourceManager, SDL_R
 		pos->setPosition(startPos);
 		body->getBody()->SetTransform(b2Vec2(startPos.x / 30, startPos.y / 30), 0);
 	}
-
-
-	
 }
 
 int LevelManager::getCurrentLevel()

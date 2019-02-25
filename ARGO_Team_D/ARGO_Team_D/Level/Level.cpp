@@ -347,7 +347,7 @@ void Level::render(SDL_Renderer * renderer, Camera &camera)
 
 
 	SDL_Rect destination;
-	destination.x = -1920 - bounds.x;
+	destination.x = -1900 - bounds.x / 1.3f;
 	destination.y = 0;
 	destination.w = 1920;
 	destination.h = 1080;
@@ -355,7 +355,7 @@ void Level::render(SDL_Renderer * renderer, Camera &camera)
 	for (int i = 0; i < m_levelWidth; i++) {
 		for (int j = 0; j < 3; j++) {
 			SDL_RenderCopy(renderer, m_backgrounds.at(j), NULL, &destination);
-			destination.x += 1910;
+			destination.x += 1900;
 		}
 	}
 

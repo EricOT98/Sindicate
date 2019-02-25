@@ -36,6 +36,14 @@
 #include "Client/Client.h"
 #include "ECS/Systems/NetworkingSystem.h"
 #include <SDL_haptic.h>
+#include "ECS/Systems/MovementSystem.h"
+#include "ECS/Components/VelocityComponent.h"
+#include "ECS/Components/TimeToLiveComponent.h"
+#include "ECS/Systems/TimeToLiveSystem.h"
+#include "ECS/Components/GunComponent.h"
+#include "ECS/Components//AiComponent.h"
+#include "AI/PlayerAiComponent.h"
+#include "AI/PlayerAiSystem.h"
 #include <stdlib.h>
 #include <time.h>
 #include <functional>
@@ -96,7 +104,6 @@ public:
 	// Resources
 	ResourceManager * m_resourceManager;
 
-	void spawnProjectile(float x, float y);
 	SDL_Renderer * m_renderer;
 
 	void loadAlevel(int num);
@@ -195,9 +202,13 @@ private:
 	// HUD
 	Hud * m_hud;
 
-
 	//Observers and Subjects for level completion
 	LevelData *m_levelData;
 	LevelObserver *m_levelObserver;
+
+	//Ai
+	Entity* m_aiEnt;
+	PlayerAiSystem* playeraiSystem;
+	PlayerAiComponent* aiComponent;
 };
 #endif // !GAME_H
