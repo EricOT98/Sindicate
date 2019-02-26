@@ -107,7 +107,7 @@ Game::Game() :
 	m_lobby = new LobbyScreen(m_windowWidth, m_windowHeight, *this, m_renderer, p_window);
 
 
-	m_particleSystem = new ParticleSystem(m_camera);
+	m_particleSystem = new ParticleSystem(&m_camera);
 
 	m_levelData = new LevelData(3);
 	m_levelObserver = new LevelObserver(1);
@@ -135,7 +135,7 @@ Game::Game() :
 	}
 
 	aiComponent = new PlayerAiComponent(m_player);
-	playeraiSystem->addComponent(aiComponent);
+	//playeraiSystem->addComponent(aiComponent);
 
 
 	inputHandler = new InputHandler(m_controlSystem, *gGameController, *gControllerHaptic);
@@ -502,7 +502,7 @@ void Game::initialiseEntities()
 	m_animationSystem.addEntity(e);
 	m_player = e;
 	m_playerBody = dynamic_cast<BodyComponent*>(e->getComponentsOfType({ "Body" })["Body"]);
-	playeraiSystem->addEntity(m_player);
+	//playeraiSystem->addEntity(m_player);
 
 	for(int i = 0; i < GUN_ENEMY_COUNT; ++i)
 	{
@@ -510,6 +510,7 @@ void Game::initialiseEntities()
 		m_gunEnemies.push_back(enemy);
 		m_entityList.push_back(enemy->entity);
 		m_animationSystem.addEntity(enemy->entity);
+		m_particleSystem->addEntity(enemy->entity);
 	}
 	for (int i = 0; i < FLY_ENEMY_COUNT; ++i)
 	{
@@ -517,6 +518,7 @@ void Game::initialiseEntities()
 		m_flyEnemies.push_back(enemy);
 		m_entityList.push_back(m_flyEnemies.at(i)->entity);
 		m_animationSystem.addEntity(enemy->entity);
+		m_particleSystem->addEntity(enemy->entity);
 	}
 	for (int i = 0; i < BIG_ENEMY_COUNT; ++i)
 	{
@@ -524,6 +526,7 @@ void Game::initialiseEntities()
 		m_bigEnemies.push_back(enemy);
 		m_entityList.push_back(m_bigEnemies.at(i)->entity);
 		m_animationSystem.addEntity(enemy->entity);
+		m_particleSystem->addEntity(enemy->entity);
 	}
 }
 
@@ -532,7 +535,7 @@ void Game::initialiseEntities()
 /// </summary>
 void Game::initialiseSystems()
 {
-	m_aiSystem = new AiSystem(m_bulletManager, m_playerBody, WORLD_SCALE, m_levelData);
+	m_aiSystem = new AiSystem(m_bulletManager, m_playerBody, WORLD_SCALE, m_levelData, m_camera);
 	m_healthSystem = new HealthSystem();
 	for (auto e : m_entityList)
 	{
@@ -559,7 +562,7 @@ void Game::initialiseFactories()
 {
 	std::string spriteName = "Player";
 	m_playerFactory = new PlayerFactory(spriteName, VectorAPI(64, 64), m_resourceManager, m_world, WORLD_SCALE, m_renderer);
-	m_enemyFactory = new EnemyFactory(m_resourceManager, m_world, WORLD_SCALE);
+	m_enemyFactory = new EnemyFactory(m_resourceManager, m_world, WORLD_SCALE, m_renderer);
 }
 
 /// <summary>
