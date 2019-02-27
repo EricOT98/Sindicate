@@ -102,7 +102,7 @@ Game::Game() :
 
 	m_gameState = State::Menu;
 	m_menu = new MainMenu(m_windowWidth, m_windowHeight, *this, m_renderer, p_window);
-	m_options = new OptionsMenu(m_windowWidth, m_windowHeight, *this, m_renderer, p_window, vibrationOn);
+	m_options = new OptionsMenu(m_windowWidth, m_windowHeight, *this, m_renderer, p_window, vibrationOn, musicOn);
 	m_credits = new CreditScreen(m_windowWidth, m_windowHeight, *this, m_renderer, p_window);
 	m_levelSelect = new LevelSelectMenu(m_windowWidth, m_windowHeight, *this, m_renderer, p_window);
 	m_pauseScreen = new PauseScreen(m_windowWidth, m_windowHeight, *this, m_renderer, p_window, m_camera);
@@ -311,6 +311,18 @@ void Game::processEvents()
 void Game::update(const float & dt)
 {
 
+	if (!musicOn)
+	{
+		Mix_HaltMusic();
+	}
+
+	if (Mix_PlayingMusic() == 0 && musicOn)
+	{
+		//Play the music
+		Mix_PlayMusic(m_testMusic, -1);
+		Mix_VolumeMusic(MIX_MAX_VOLUME / 2);
+	}
+
 	if (Mix_PlayingMusic() == 0)
 	{
 		//Play the music
@@ -358,9 +370,11 @@ void Game::update(const float & dt)
 				if (m_levelManager.checkPlayerCollisions(m_player, *m_resourceManager, WORLD_SCALE, m_renderer)) {
 					if (m_levelManager.getCurrentLevel() == 0) {
 						m_levelData->reset(3); // to be changed depending on hoe many enemys we need to kill
+						fadeToState(State::PlayScreen);
 					}
 					else if (m_levelManager.getCurrentLevel() == 1) {
 						m_levelData->reset(3); // to be changed depending on hoe many enemys we need to kill
+						fadeToState(State::PlayScreen);
 					}
 				}	
 			}
