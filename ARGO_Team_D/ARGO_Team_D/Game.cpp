@@ -9,9 +9,6 @@ Game::Game() :
 	m_camera(m_windowWidth, m_windowHeight),
 	m_physicsSystem(WORLD_SCALE)
 {
-	m_network = NetworkingSystem();
-	m_network.initClientLocalClient();
-
 	m_world.SetContactListener(&m_contactListener);
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
@@ -166,6 +163,7 @@ Game::Game() :
 	portal = Mix_LoadWAV("ASSETS/SOUNDS/teleport.wav");
 	Mix_VolumeChunk(portal, 128);
 
+	online = true;
 }
 
 Game::~Game()
@@ -354,15 +352,6 @@ void Game::update(const float & dt)
 	{
 		SDL_ShowCursor(SDL_ENABLE);
 	}
-
-	if (!m_network.getHost())
-	{
-		m_network.updateFromHost();
-	}
-	else {
-		m_network.updateClients();
-	}
-
 	switch (m_gameState)
 	{
 	case Menu:
@@ -441,6 +430,9 @@ void Game::update(const float & dt)
 			fadeToState(State::Menu);
 			m_levelManager.setGameFinished(false);
 		}
+		if (online) {
+			m_network.update();
+		}
 		break;
 	case Options:
 		m_options->update();
@@ -455,7 +447,6 @@ void Game::update(const float & dt)
 		m_levelSelect->update();
 		break;
 	case Multiplayer:
-		m_network.updateFromHost();
 		break;
 	case Pause:
 		m_pauseScreen->update();
@@ -466,20 +457,19 @@ void Game::update(const float & dt)
 		m_deathScreen->updatePositions();
 		break;
 	case Lobby:
+		m_network.update();
+		if (m_network.m_inGame && !m_network.m_inGameChecked) {
+			m_lobby->StartGame();
+			m_network.m_inGameChecked = true;
+		}
+		if (!m_network.m_inGame && m_network.m_lobbiesUpdated) {
+			m_lobby->updateLobbies();
+		}
 		m_lobby->update();
 		break;
 	default:
 		break;
 	}
-
-	if (!m_network.getHost())
-	{
-		m_network.sendToHost();
-	}
-	else {
-		m_network.sendToClients();
-	}
-
 }
 
 void Game::render()
@@ -650,7 +640,17 @@ void Game::initialiseEntities()
 	m_controlSystem.addEntity(e);
 	m_particleSystem->addEntity(e);
 	m_animationSystem.addEntity(e);
+	m_network.addEntity(e);
 	m_player = e;
+	m_players.push_back(e);
+	for (int i = 0; i < 3; ++i) {
+		Entity * e = m_playerFactory->createOnlinePlayer(VectorAPI(150, 0));
+		m_entityList.push_back(e);
+		m_particleSystem->addEntity(e);
+		m_animationSystem.addEntity(e);
+		m_network.addEntity(e);
+		m_players.push_back(e);
+	}
 	m_playerBody = dynamic_cast<BodyComponent*>(e->getComponentsOfType({ "Body" })["Body"]);
 	playeraiSystem->addEntity(m_player);
 

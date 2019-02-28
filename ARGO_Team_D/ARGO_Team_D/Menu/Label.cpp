@@ -165,3 +165,19 @@ void Label::isACheckBoxLabel(bool * b)
 	isCheckBoxLabel = true;
 	condition = b;
 }
+
+void Label::setSize(int x, int y)
+{
+	displayWidth = x;
+	displayHeight = y;
+	message_rect.w = displayWidth;
+	message_rect.h = displayHeight;
+}
+
+void Label::setString(std::string s)
+{
+	SDL_DestroyTexture(message);
+	surfaceMessage = TTF_RenderText_Blended(arial, s.c_str(), color);
+	message = SDL_CreateTextureFromSurface(rend, surfaceMessage);
+	SDL_FreeSurface(surfaceMessage);
+}

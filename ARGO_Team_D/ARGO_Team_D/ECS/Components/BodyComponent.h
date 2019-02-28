@@ -40,6 +40,7 @@ public:
 	int getBulletHitCount();
 	void setBulletHitCount(int count);
 	void setInitialPos(b2Vec2 pos);
+	void setPosition(const b2Vec2 & pos);
 	b2Vec2 getInitialPos();
 	void resetPos();
 	bool m_AiContact;

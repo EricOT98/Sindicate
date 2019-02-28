@@ -47,6 +47,8 @@ void ModeSelectScreen::GoToMultiplayerGame()
 	m_game->setAI(false);
 	m_game->resetKills();
 	m_game->setGameState(State::Lobby);
+	m_game->m_network.initClientLocalClient();
+	m_game->m_network.joinServer();
 	for (auto & b : m_buttons)
 	{
 		b->reset();

@@ -87,6 +87,7 @@
     <ClCompile Include="Menu\LobbyScreen.cpp" />
     <ClCompile Include="ECS\Systems\HealthSystem.cpp" />
     <ClCompile Include="Level\Goal.cpp" />
+    <ClCompile Include="Client\UDPClient.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AI\Actions.h" />
@@ -206,5 +207,7 @@
     <ClInclude Include="Menu\LobbyScreen.h" />
     <ClInclude Include="ECS\Systems\HealthSystem.h" />
     <ClInclude Include="Level\Goal.h" />
+    <ClInclude Include="Client\UDPClient.h" />
+    <ClInclude Include="ECS\Components\NetworkComponent.h" />
   </ItemGroup>
 </Project>

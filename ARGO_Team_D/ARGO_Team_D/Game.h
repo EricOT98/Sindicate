@@ -105,6 +105,10 @@ public:
 	ResourceManager * m_resourceManager;
 
 	SDL_Renderer * m_renderer;
+	// Networking
+	NetworkingSystem m_network;
+	PlayerFactory * m_playerFactory;
+
 
 	void loadAlevel(int num);
 	void reloadCurrentlevel();
@@ -132,6 +136,7 @@ private:
 	// ECS Entities
 	std::vector<Entity*> m_entityList;
 	Entity * m_player;
+	std::vector<Entity*> m_players;
 	const int GUN_ENEMY_COUNT = 20;
 	const int FLY_ENEMY_COUNT = 20;
 	const int BIG_ENEMY_COUNT = 2;
@@ -143,7 +148,6 @@ private:
 	BodyComponent * m_playerBody;
 
 	// Factories
-	PlayerFactory * m_playerFactory;
 	EnemyFactory * m_enemyFactory;
 
 	// Misc
@@ -195,8 +199,12 @@ private:
 	ModeSelectScreen * m_modeSelect;
 	LobbyScreen * m_lobby;
 
-	// Networking
-	NetworkingSystem m_network;
+
+	//bullets
+	std::vector<Entity *> m_bullets;
+	float startTimer;
+	bool fire = false;
+	int test;
 
 	// Bullets
 	BulletManager * m_bulletManager;
@@ -207,6 +215,8 @@ private:
 	//Observers and Subjects for level completion
 	LevelData *m_levelData;
 	LevelObserver *m_levelObserver;
+
+	bool online;
 
 	//Ai
 	Entity* m_aiEnt;

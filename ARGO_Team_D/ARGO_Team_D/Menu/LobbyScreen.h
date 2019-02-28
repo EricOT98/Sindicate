@@ -2,6 +2,10 @@
 #define LOBBYSCREEN_H
 #include "Screen.h"
 #include "../Game.h"
+#include "../ECS/Systems/NetworkingSystem.h"
+
+class Game;
+
 class LobbyScreen: public Screen
 {
 public:
@@ -9,8 +13,16 @@ public:
 	~LobbyScreen();
 	void StartGame();
 	void GoToMenu();
+	void setLobbyInformation(std::vector<NetworkingSystem::Lobby> & lobbies);
+	void createLobby();
+	void joinLobby();
+	void leaveLobby();
+	void startLobby();
+	void updateLobbies();
 private:
 	Game * m_game;
+	SDL_Rect m_lobbyRect;
+	int lobbyIn = 0;
 };
 
 #endif // !LOBBYSCREEN_H
