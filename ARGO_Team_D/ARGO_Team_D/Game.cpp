@@ -379,7 +379,6 @@ void Game::update(const float & dt)
 			{
 				playeraiSystem->runTree();
 			}
-			
 			m_aiSystem->update(dt);
 			m_bulletManager->update(dt);
 			m_physicsSystem.update();
