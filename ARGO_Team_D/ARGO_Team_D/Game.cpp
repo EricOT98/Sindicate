@@ -374,7 +374,7 @@ void Game::update(const float & dt)
 		{
 			m_world.Step(1 / 60.f, 10, 5); // Update the Box2d world
 			m_controlSystem.update();
-			playeraiSystem->runTree();
+			//playeraiSystem->runTree();
 			m_aiSystem->update(dt);
 			m_bulletManager->update(dt);
 			m_physicsSystem.update();
@@ -743,9 +743,9 @@ void Game::resetKills()
 		m_levelData->reset(15); // to be changed depending on hoe many enemys we need to kill
 	}
 	else if (m_levelManager.getCurrentLevel() == 2) {
-		m_levelData->reset(5); // to be changed depending on hoe many enemys we need to kill
+		m_levelData->reset(15); // to be changed depending on hoe many enemys we need to kill
 	}
 	else if (m_levelManager.getCurrentLevel() == 3) {
-		m_levelData->reset(7); // to be changed depending on hoe many enemys we need to kill
+		m_levelData->reset(15); // to be changed depending on hoe many enemys we need to kill
 	}
 }
