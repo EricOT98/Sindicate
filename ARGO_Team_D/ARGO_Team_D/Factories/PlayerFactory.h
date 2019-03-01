@@ -3,7 +3,6 @@
 
 #include "..//ECS/Entities/Entity.h"
 #include "..//ECS/Components/AnimationComponent.h"
-#include "..//ECS/Components/GunComponent.h"
 #include "..//ECS/Components/ParticleEffectsComponent.h"
 #include "../ECS/Components/NetworkComponent.h"
 #include "..//Client/Client.h"

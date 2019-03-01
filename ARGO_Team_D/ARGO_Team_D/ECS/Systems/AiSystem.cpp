@@ -224,4 +224,3 @@ void AiSystem::handleFlyEnemy(AiComponents & ac)
 		}
 	}
 }
-

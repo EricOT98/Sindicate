@@ -60,7 +60,6 @@ Entity * PlayerFactory::createOnlinePlayer(std::string spriteId, VectorAPI dimen
 
 	entity->addComponent(part);
 	//entity->addComponent(body);
-	entity->addComponent(new GunComponent(0));
 
 	AnimationComponent * a = new AnimationComponent();
 	std::vector<SDL_Rect> idleFrames;

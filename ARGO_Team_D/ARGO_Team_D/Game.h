@@ -34,11 +34,6 @@
 #include "Client/Client.h"
 #include "ECS/Systems/NetworkingSystem.h"
 #include <SDL_haptic.h>
-#include "ECS/Systems/MovementSystem.h"
-#include "ECS/Components/VelocityComponent.h"
-#include "ECS/Components/TimeToLiveComponent.h"
-#include "ECS/Systems/TimeToLiveSystem.h"
-#include "ECS/Components/GunComponent.h"
 #include "ECS/Components//AiComponent.h"
 #include "AI/PlayerAiComponent.h"
 #include "AI/PlayerAiSystem.h"
@@ -165,11 +160,8 @@ private:
 	SDL_Joystick* gGameController = NULL;
 	SDL_Haptic* gControllerHaptic = NULL;
 
-	// Test - TO BE REMOVED
-	SDL_Texture * texture;
-	SDL_Texture * square;
-	SDL_Texture * bulletTexture;
-	Mix_Music *	m_testMusic;
+	// Music
+	Mix_Music *	m_music;
 
 	// Box2D
 	b2Vec2 m_gravity;
@@ -196,20 +188,13 @@ private:
 	ModeSelectScreen * m_modeSelect;
 	LobbyScreen * m_lobby;
 
-
-	//bullets
-	std::vector<Entity *> m_bullets;
-	float startTimer;
-	bool fire = false;
-	int test;
-
 	// Bullets
 	BulletManager * m_bulletManager;
 
 	// HUD
 	Hud * m_hud;
 
-	//Observers and Subjects for level completion
+	// Observers and Subjects for level completion
 	LevelData *m_levelData;
 	LevelObserver *m_levelObserver;
 
