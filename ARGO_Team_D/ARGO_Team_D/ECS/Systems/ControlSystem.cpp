@@ -125,6 +125,7 @@ void ControlSystem::bindJump(Mix_Chunk * sound)
 void ControlSystem::spawnProjectile(float x, float y)
 {
 	// Add fire rate
+	direction = m_moveLeft && m_moveRight ? 1 : direction;
 	m_bulletManager->createBullet(VectorAPI(x, y + 7), 50 * direction, true);
 }
 

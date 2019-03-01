@@ -90,7 +90,7 @@ Game::Game() :
 		cout << "Loading..." << endl;
 	}
 
-	m_testMusic = m_resourceManager->getSoundResource("music");
+	m_music = m_resourceManager->getSoundResource("music");
 
 
 	jumpSound = Mix_LoadWAV("ASSETS/SOUNDS/jump.wav");
@@ -319,33 +319,12 @@ void Game::update(const float & dt)
 	{
 		Mix_HaltMusic();
 	}
-
 	if (Mix_PlayingMusic() == 0 && musicOn)
 	{
 		//Play the music
-		Mix_PlayMusic(m_testMusic, -1);
+		Mix_PlayMusic(m_music, -1);
 		Mix_VolumeMusic(MIX_MAX_VOLUME / 2);
 	}
-
-	if (!musicOn)
-	{
-		Mix_HaltMusic();
-	}
-
-	if (Mix_PlayingMusic() == 0 && musicOn)
-	{
-		//Play the music
-		Mix_PlayMusic(m_testMusic, -1);
-		Mix_VolumeMusic(MIX_MAX_VOLUME / 2);
-	}
-
-	if (Mix_PlayingMusic() == 0)
-	{
-		//Play the music
-		Mix_PlayMusic(m_testMusic, -1);
-		Mix_VolumeMusic(MIX_MAX_VOLUME / 2);
-	}
-
 	if (m_gameState == State::PlayScreen)
 	{
 		SDL_ShowCursor(SDL_DISABLE);
@@ -646,7 +625,7 @@ void Game::initialiseEntities()
 	m_player = e;
 	m_players.push_back(e);
 	for (int i = 0; i < 3; ++i) {
-		Entity * e = m_playerFactory->createOnlinePlayer("Player", VectorAPI(64, 64), VectorAPI(150, 0));
+		Entity * e = m_playerFactory->createOnlinePlayer("Player", VectorAPI(64, 64), VectorAPI(-1500, 0));
 		m_entityList.push_back(e);
 		m_particleSystem->addEntity(e);
 		m_animationSystem.addEntity(e);
